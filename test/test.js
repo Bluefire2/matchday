@@ -1,11 +1,21 @@
 'use strict';
 
-var expect = require('chai').expect;
-var returnFour = require('../src/index');
+const expect = require('chai').expect,
+    matchday = require('../src/index');
 
-describe('#numFormatter', function() {
-    it('should always return four', function() {
-        var result = returnFour();
-        expect(result).to.equal(4);
+describe('#matchday', function() {
+    it('should return an empty object when given an invalid league', function() {
+        const badLeagueNames = [
+            'LIGUE 1',
+            'SERIE A',
+            'premier',
+            'abcdef',
+            'hello world'
+        ];
+
+        badLeagueNames.forEach(elem => {
+            const result = matchday(elem);
+            expect(result).to.deep.equal({});
+        });
     });
 });
