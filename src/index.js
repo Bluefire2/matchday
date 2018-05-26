@@ -1,9 +1,19 @@
 'use strict';
 
+const constants = require('./constants'),
+    LEAGUES = constants.LEAGUES;
+
 /**
- * Returns 4
- * @return {int}
+ * Fetch the following:
+ *  - The match data for all teams in [league] for the next [daysAhead] days
+ *  - The current standings of the league
+ * @param league
+ * @param daysAhead
  */
-module.exports = function() {
-    return 4;
+module.exports = (league, daysAhead) => {
+    if(league in LEAGUES) {
+        // do stuff
+    } else {
+        return {};
+    }
 };

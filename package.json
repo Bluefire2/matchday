@@ -15,5 +15,8 @@
     "coveralls": "^3.0.1",
     "istanbul": "^0.4.5",
     "mocha": "^5.2.0"
+  },
+  "dependencies": {
+    "md5": "^2.2.1"
   }
 }
