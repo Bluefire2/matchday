@@ -4,16 +4,16 @@ const expect = require('chai').expect,
     matchday = require('../src/index');
 
 describe('#matchday', function() {
-    it('should return an empty object when given an invalid league', function() {
-        const badLeagueNames = [
-            'LIGUE 1',
-            'SERIE A',
-            'premier',
-            'abcdef',
-            'hello world'
-        ];
+    const badLeagueNames = [
+        'LIGUE 1',
+        'SERIE A',
+        'premier',
+        'abcdef',
+        'hello world'
+    ];
 
-        badLeagueNames.forEach(elem => {
+    badLeagueNames.forEach(elem => {
+        it(`should return an empty object when given invalid league ${elem}`, function() {
             const result = matchday(elem);
             expect(result).to.deep.equal({});
         });
