@@ -1,7 +1,7 @@
 'use strict';
 
 var expect = require('chai').expect;
-var returnFour = require('../index');
+var returnFour = require('../src/index');
 
 describe('#numFormatter', function() {
     it('should always return four', function() {
