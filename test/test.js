@@ -8,8 +8,8 @@ chai.use(chaiAsPromised);
 const expect = chai.expect;
 
 const {LEAGUES} = require('../src/constants'),
-    {matchday, getGames} = require('../src/index'),
-    {leagueToID} = require('../src/util');
+    matchday = require('../src/index'),
+    {leagueToID, getGames} = require('../src/util');
 
 describe('util', function () {
     describe('leagueToID()', function () {
@@ -24,9 +24,7 @@ describe('util', function () {
             });
         });
     });
-});
 
-describe('matchday', function () {
     describe('getGames()', function () {
         const badLeagueNames = [
             'LIGUE 1',
@@ -65,4 +63,8 @@ describe('matchday', function () {
             });
         });
     });
+});
+
+describe('matchday', function () {
+
 });
