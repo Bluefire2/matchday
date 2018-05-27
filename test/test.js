@@ -11,7 +11,7 @@ const expect = chai.expect;
 
 const {LEAGUES} = require('../src/constants'),
     matchday = require('../src/index'),
-    {leagueToID, getGames, getLeagueStandings} = require('../src/util');
+    {leagueToID, getLeagueGames, getLeagueStandings} = require('../src/util');
 
 const goodLeagueNames = [
     'PREMIER',
@@ -40,7 +40,7 @@ describe('util', function () {
         });
     });
 
-    describe('getLeagueStandings', function () {
+    describe('getLeagueStandings()', function () {
         goodLeagueNames.forEach(elem => {
             it(`should resolve with a nonempty array when given valid league ${elem}`, function () {
                 const standings = getLeagueStandings(LEAGUES[elem]);
@@ -67,24 +67,24 @@ describe('util', function () {
         });
     });
 
-    describe('getGames()', function () {
+    describe('getLeagueGames()', function () {
         badLeagueNames.forEach(elem => {
             it(`should reject when given invalid league ${elem}`, function () {
-                const result = getGames(elem);
+                const result = getLeagueGames(elem);
                 return expect(result).to.not.be.fulfilled;
             });
         });
 
         goodLeagueNames.forEach(elem => {
             it(`should resolve when given valid league ${elem}`, function () {
-                const result = getGames(elem);
+                const result = getLeagueGames(elem);
                 return expect(result).to.be.fulfilled;
             });
         });
 
         goodLeagueNames.forEach(elem => {
             it(`should resolve with array data when given valid league ${elem}`, function () {
-                const result = getGames(elem);
+                const result = getLeagueGames(elem);
                 result.then(data => {
                     // console.log(data); // for now
                 });

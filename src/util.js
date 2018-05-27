@@ -85,7 +85,7 @@ module.exports.getLeagueStandings = league => {
  * @param daysAhead
  * @returns {Promise}
  */
-module.exports.getGames = (league, daysAhead = 7) => {
+module.exports.getLeagueGames = (league, daysAhead = 7) => {
     // to round up to the nearest day, we can add 1 day and then round down:
     const maxDate = moment().add(daysAhead + 1, 'days').startOf('day');
     return new Promise((resolve, reject) => {
