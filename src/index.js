@@ -11,15 +11,7 @@ const parse = require('csv-parse'),
 
 moment().format();
 
-/**
- * Fetch the following:
- *  - The match data for all teams in [league] for the next [daysAhead] days
- *  - The current standings of the league
- * and wrap it in a promise.
- * @param league
- * @param daysAhead
- */
-module.exports = (league, daysAhead = 7) => {
+const getGames = (league, daysAhead = 7) => {
     // to round up to the nearest day, we can add 1 day and then round down:
     const maxDate = moment().add(daysAhead + 1, 'days').startOf('day');
     return new Promise((resolve, reject) => {
@@ -39,10 +31,14 @@ module.exports = (league, daysAhead = 7) => {
                             const matchesFromLeagueBeforeMaxDate =
                                 output
                                     .filter(({league_id}) => parseInt(league_id) === leagueID) // filter league
-                                    .filter(({date}) => {
+                                    .filter(({date}) => { // filter date
                                         const d = moment(date, 'YYYY-MM-DD');
                                         return d.isAfter(moment()) && d.isBefore(maxDate);
-                                    }); // filter date
+                                    })
+                                    .map(({date, team1, team2, prob1, prob2, probtie, proj_score1, proj_score2}) => {
+                                        // keep only relevant properties
+                                        return {date, team1, team2, prob1, prob2, probtie, proj_score1, proj_score2};
+                                    });
                             resolve(matchesFromLeagueBeforeMaxDate);
                         }
                     });
@@ -52,4 +48,17 @@ module.exports = (league, daysAhead = 7) => {
             reject('Invalid league');
         }
     });
+};
+
+module.exports.getGames = getGames; // for testing
+/**
+ * Fetch the following:
+ *  - The match data for all teams in [league] for the next [daysAhead] days
+ *  - The current standings of the league
+ * and wrap it in a promise.
+ * @param league
+ * @param daysAhead
+ */
+module.exports.matchday = (league, daysAhead = 7) => {
+    // empty for now
 };

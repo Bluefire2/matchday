@@ -8,9 +8,8 @@ chai.use(chaiAsPromised);
 const expect = chai.expect;
 
 const {LEAGUES} = require('../src/constants'),
-    matchday = require('../src/index'),
-    {leagueToID} = require('../src/util'),
-    moment = require('moment');
+    {matchday, getGames} = require('../src/index'),
+    {leagueToID} = require('../src/util');
 
 describe('util', function () {
     describe('leagueToID()', function () {
@@ -28,40 +27,42 @@ describe('util', function () {
 });
 
 describe('matchday', function () {
-    const badLeagueNames = [
-        'LIGUE 1',
-        'SERIE A',
-        'premier',
-        'abcdef',
-        'hello world'
-    ];
+    describe('getGames()', function () {
+        const badLeagueNames = [
+            'LIGUE 1',
+            'SERIE A',
+            'premier',
+            'abcdef',
+            'hello world'
+        ];
 
-    badLeagueNames.forEach(elem => {
-        it(`should reject when given invalid league ${elem}`, function () {
-            const result = matchday(elem);
-            return expect(result).to.not.be.fulfilled;
-        });
-    });
-
-    const goodLeagueNames = [
-        'PREMIER',
-        'BRASILEIRAO'
-    ];
-
-    goodLeagueNames.forEach(elem => {
-        it(`should resolve when given valid league ${elem}`, function () {
-            const result = matchday(elem);
-            return expect(result).to.be.fulfilled;
-        });
-    });
-
-    goodLeagueNames.forEach(elem => {
-        it(`should resolve with array data when given valid league ${elem}`, function () {
-            const result = matchday(elem);
-            result.then(data => {
-                console.log(data); // for now
+        badLeagueNames.forEach(elem => {
+            it(`should reject when given invalid league ${elem}`, function () {
+                const result = getGames(elem);
+                return expect(result).to.not.be.fulfilled;
             });
-            return expect(result).to.eventually.be.an.instanceof(Array);
+        });
+
+        const goodLeagueNames = [
+            'PREMIER',
+            'BRASILEIRAO'
+        ];
+
+        goodLeagueNames.forEach(elem => {
+            it(`should resolve when given valid league ${elem}`, function () {
+                const result = getGames(elem);
+                return expect(result).to.be.fulfilled;
+            });
+        });
+
+        goodLeagueNames.forEach(elem => {
+            it(`should resolve with array data when given valid league ${elem}`, function () {
+                const result = getGames(elem);
+                result.then(data => {
+                    console.log(data); // for now
+                });
+                return expect(result).to.eventually.be.an.instanceof(Array);
+            });
         });
     });
 });
