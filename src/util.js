@@ -4,7 +4,9 @@ const constants = require('./constants'),
 const parse = require('csv-parse'),
     fs = require('fs'),
     Promise = require('bluebird'),
-    moment = require('moment');
+    moment = require('moment'),
+    axios = require('axios'),
+    cheerio = require('cheerio');
 
 moment().format();
 
@@ -19,14 +21,65 @@ const leagueToID = league => {
         case LEAGUES.PREMIER:
             return 2411;
         case LEAGUES.BRASILEIRAO:
-            return 2105
+            return 2105;
     }
 };
 
 module.exports.leagueToID = leagueToID;
 
 /**
- * Fetch the games for the league specified, within the specified timeframe.
+ * Returns the URL to parse league standings from for league [league]. To be used in conjunction with [getLeagueStandings].
+ *
+ * @param league
+ * @returns {string}
+ */
+const leagueToStandingsURL = league => {
+    switch (league) {
+        case LEAGUES.PREMIER:
+            return 'http://www.espn.com/soccer/standings/_/league/eng.1';
+        case LEAGUES.BRASILEIRAO:
+            return 'http://www.espn.com/soccer/standings/_/league/bra.1';
+    }
+};
+
+/**
+ * Fetches the current league standings for league [league].
+ *
+ * @param league
+ * @returns {Promise}
+ */
+module.exports.getLeagueStandings = league => {
+    const url = leagueToStandingsURL(league);
+    return new Promise((resolve, reject) => {
+        axios.get(url)
+            .then(response => {
+                const $ = cheerio.load(response.data),
+                    rows = $('.standings.has-team-logos tbody tr');
+
+                const standings = rows.map(function (i, elem) {
+                    const tds = $(this).find('td'),
+                        teamTd = $(tds[0]),
+                        team = $(teamTd).find('span.team-names').text(),
+                        goalDiffTd = $(tds[7]),
+                        goalDiff = parseInt($(goalDiffTd).text()),
+                        pointsTd = $(tds[8]),
+                        points = parseInt($(pointsTd).text());
+                    return {
+                        team,
+                        goalDiff,
+                        points
+                    };
+                }).get();
+
+                resolve(standings);
+            }).catch(error => {
+            reject(error);
+        });
+    });
+};
+
+/**
+ * Fetches the games for the league specified, within the specified timeframe.
  *
  * @param league
  * @param daysAhead
