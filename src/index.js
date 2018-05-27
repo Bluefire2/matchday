@@ -27,12 +27,12 @@ module.exports = (league, daysAhead) => {
                 if (error) {
                     reject(error);
                 } else {
-                    parse(csv, (csvError, output) => {
+                    parse(csv, {columns: true, cast: true, cast_date: true}, (csvError, output) => {
                         if (csvError) {
                             reject(csvError);
                         } else {
-                            // TODO: change this placeholder
-                            resolve(output);
+                            const matchesFromLeague = output.filter(elem => parseInt(elem.league_id) === leagueID);
+                            resolve(matchesFromLeague);
                         }
                     });
                 }

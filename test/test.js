@@ -54,4 +54,13 @@ describe('matchday', function () {
             return expect(result).to.be.fulfilled;
         });
     });
+
+    goodLeagueNames.forEach(elem => {
+        it(`should resolve with data when given valid league ${elem}`, function () {
+            const result = matchday(elem);
+            result.then(data => {
+                console.log(data);
+            });
+        });
+    });
 });
