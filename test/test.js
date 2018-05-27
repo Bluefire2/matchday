@@ -2,8 +2,14 @@
 
 const {LEAGUES} = require('../src/constants');
 
-const expect = require('chai').expect,
-    matchday = require('../src/index'),
+const chai = require('chai'),
+    chaiAsPromised = require("chai-as-promised");
+
+chai.use(chaiAsPromised);
+
+const expect = chai.expect;
+
+const matchday = require('../src/index'),
     {leagueToID} = require('../src/util');
 
 describe('util', function () {
@@ -31,9 +37,21 @@ describe('matchday', function () {
     ];
 
     badLeagueNames.forEach(elem => {
-        it(`should return an empty object when given invalid league ${elem}`, function () {
+        it(`should reject when given invalid league ${elem}`, function () {
             const result = matchday(elem);
-            expect(result).to.deep.equal({});
+            return expect(result).to.not.be.fulfilled;
+        });
+    });
+
+    const goodLeagueNames = [
+        'PREMIER',
+        'BRASILEIRAO'
+    ];
+
+    goodLeagueNames.forEach(elem => {
+        it(`should resolve when given valid league ${elem}`, function () {
+            const result = matchday(elem);
+            return expect(result).to.be.fulfilled;
         });
     });
 });

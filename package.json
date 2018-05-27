@@ -17,6 +17,10 @@
     "mocha": "^5.2.0"
   },
   "dependencies": {
+    "bluebird": "^3.5.1",
+    "chai-as-promised": "^7.1.1",
+    "csv-parse": "^2.4.0",
+    "fs": "0.0.1-security",
     "md5": "^2.2.1"
   }
 }
