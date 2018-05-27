@@ -1,7 +1,5 @@
 'use strict';
 
-const {LEAGUES} = require('../src/constants');
-
 const chai = require('chai'),
     chaiAsPromised = require("chai-as-promised");
 
@@ -9,8 +7,10 @@ chai.use(chaiAsPromised);
 
 const expect = chai.expect;
 
-const matchday = require('../src/index'),
-    {leagueToID} = require('../src/util');
+const {LEAGUES} = require('../src/constants'),
+    matchday = require('../src/index'),
+    {leagueToID} = require('../src/util'),
+    moment = require('moment');
 
 describe('util', function () {
     describe('leagueToID()', function () {
@@ -56,11 +56,12 @@ describe('matchday', function () {
     });
 
     goodLeagueNames.forEach(elem => {
-        it(`should resolve with non-empty data when given valid league ${elem}`, function () {
+        it(`should resolve with array data when given valid league ${elem}`, function () {
             const result = matchday(elem);
             result.then(data => {
-                expect(data.length).to.be.above(1);
+                console.log(data); // for now
             });
+            return expect(result).to.eventually.be.an.instanceof(Array);
         });
     });
 });

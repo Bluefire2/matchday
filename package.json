@@ -21,6 +21,7 @@
     "chai-as-promised": "^7.1.1",
     "csv-parse": "^2.4.0",
     "fs": "0.0.1-security",
-    "md5": "^2.2.1"
+    "md5": "^2.2.1",
+    "moment": "^2.22.1"
   }
 }

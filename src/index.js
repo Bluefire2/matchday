@@ -6,7 +6,10 @@ const constants = require('./constants'),
 const parse = require('csv-parse'),
     {leagueToID} = require('./util'),
     fs = require('fs'),
-    Promise = require('bluebird');
+    Promise = require('bluebird'),
+    moment = require('moment');
+
+moment().format();
 
 /**
  * Fetch the following:
@@ -16,7 +19,9 @@ const parse = require('csv-parse'),
  * @param league
  * @param daysAhead
  */
-module.exports = (league, daysAhead) => {
+module.exports = (league, daysAhead = 7) => {
+    // to round up to the nearest day, we can add 1 day and then round down:
+    const maxDate = moment().add(daysAhead + 1, 'days').startOf('day');
     return new Promise((resolve, reject) => {
         if (league in LEAGUES) {
             const leagueID = leagueToID(LEAGUES[league]);
@@ -27,12 +32,18 @@ module.exports = (league, daysAhead) => {
                 if (error) {
                     reject(error);
                 } else {
-                    parse(csv, {columns: true, cast: true, cast_date: true}, (csvError, output) => {
+                    parse(csv, {columns: true}, (csvError, output) => {
                         if (csvError) {
                             reject(csvError);
                         } else {
-                            const matchesFromLeague = output.filter(elem => parseInt(elem.league_id) === leagueID);
-                            resolve(matchesFromLeague);
+                            const matchesFromLeagueBeforeMaxDate =
+                                output
+                                    .filter(({league_id}) => parseInt(league_id) === leagueID) // filter league
+                                    .filter(({date}) => {
+                                        const d = moment(date, 'YYYY-MM-DD');
+                                        return d.isAfter(moment()) && d.isBefore(maxDate);
+                                    }); // filter date
+                            resolve(matchesFromLeagueBeforeMaxDate);
                         }
                     });
                 }
