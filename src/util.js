@@ -64,7 +64,7 @@ module.exports.pointsFromGame = league => {
  * @param {number} pLoss The probability of losing the game.
  * @returns {number}
  */
-module.exports.winTieLossSample = (pWin, pTie, pLoss) => {
+const winTieLossSample = (pWin, pTie, pLoss) => {
     const r = Math.random();
 
     if (r < pWin) {
@@ -178,7 +178,7 @@ const getStandingOfTeam = (standings, teamA) => {
  * @param standingsB
  * @returns {Array}
  */
-module.exports.addStandings = (standingsA, standingsB) => {
+const addStandings = (standingsA, standingsB) => {
     const totalStandings = JSON.parse(JSON.stringify(standingsA)); // deep copy
 
     // can't spell "functional" without "fun" :)
@@ -187,14 +187,58 @@ module.exports.addStandings = (standingsA, standingsB) => {
         if (standingSoFar === -1) {
             // this is a new team, so just append
             // Array.concat shouldn't be worse than O(1) if the second "array" only has one item
-            return Array.concat(acc, [{team, goalDiff, points}]);
+            return acc.concat([{team, goalDiff, points}]);
         } else {
             // this team already exists in [standingsA], so we need to alter it
             const {goalDiff: goalDiffSoFar, points: pointsSoFar} = acc[standingSoFar];
 
             // TODO: make this fully functional (non-mutating) if memory isn't an issue:
-            totalStandings[standingSoFar] = {team, goalDiff: goalDiff + goalDiffSoFar, points: points + pointsSoFar};
-            return totalStandings;
+            acc[standingSoFar] = {team, goalDiff: goalDiff + goalDiffSoFar, points: points + pointsSoFar};
+            return acc;
         }
     }, totalStandings);
+};
+
+module.exports.addStandings = addStandings;
+
+/**
+ * Generates a single Monte Carlo sample from the games array [games] by the following method:
+ *  - Compute a single outcome sample for the first game, resulting in a win, loss, or tie.
+ *  - Compute the points each team in the game receives as a result of said outcome, using the scoring function [pts].
+ *  - Create a mini set of "standings" for the two teams, based on the point values from the previous step.
+ *  - Repeat the above steps for each game, and aggregate all the "standings" into one standings array, and return it.
+ *
+ * @param {Array} games The array of games to be played. Each game object must have the following properties:
+ *  - team1, team2: the names of the two teams.
+ *  - prob1, prob2, probtie: the probabilities of team 1 winning, team 2 winning, or a tie (these must sum to 1).
+ * @param {Function} pts The scoring function, which must map the numbers 1, 0, and -1 to an array of two integer
+ * values. This function should be generated from a league using [pointsFromGame].
+ * @returns {Array} The standings from playing each game.
+ */
+module.exports.mcSample = (games, pts) => {
+    const gameResults = games.map(({team1, team2, prob1, prob2, probtie}) => {
+        // TODO: implement goal estimation for goal difference
+        const [goals1, goals2] = [0, 0],
+            gd = goals1 - goals2,
+            // how did team1 do?
+            outcome = winTieLossSample(prob1, probtie, prob2),
+            [points1, points2] = pts(outcome);
+
+        // return a standings array
+        return [
+            {
+                team: team1,
+                goalDiff: gd,
+                points: points1
+            },
+            {
+                team: team2,
+                goalDiff: -gd,
+                points: points2
+            }
+        ];
+    });
+
+    // add all of the mini standings
+    return gameResults.reduce(addStandings, []);
 };

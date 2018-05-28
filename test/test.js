@@ -11,7 +11,7 @@ const expect = chai.expect;
 
 const {LEAGUES} = require('../src/constants'),
     matchday = require('../src/index'),
-    {leagueToID, getLeagueGames, getLeagueStandings, addStandings} = require('../src/util');
+    {leagueToID, getLeagueGames, getLeagueStandings, addStandings, pointsFromGame, mcSample} = require('../src/util');
 
 const goodLeagueNames = [
     'PREMIER',
@@ -170,6 +170,141 @@ describe('util', function () {
             expect(result).to.be.an.instanceOf(Array).with.lengthOf(4);
 
             // TODO: check each team
+        });
+
+        it('should add uneven arrays of standings', function () {
+            const unevenA = [ { team: 'Manchester United', goalDiff: 0, points: 3 },
+                { team: 'Manchester City', goalDiff: 0, points: 3 },
+                { team: 'Liverpool', goalDiff: -0, points: 0 } ];
+
+            const unevenB = [ { team: 'Chelsea', goalDiff: 0, points: 3 },
+                { team: 'Liverpool', goalDiff: -0, points: 0 } ];
+
+            const teamNames = ['Manchester City', 'Manchester United', 'Liverpool',
+                'Chelsea'];
+
+            const result = addStandings(unevenA, unevenB);
+
+            expect(result).to.be.an.instanceOf(Array).with.lengthOf(4);
+
+            teamNames.forEach(teamA => {
+                expect(result).to.satisfy(r => r.some(({team}) => team === teamA));
+            });
+        });
+    });
+
+    describe('mcSample()', function () {
+        const scoring = pointsFromGame('PREMIER');
+
+        it('should give an empty array if there are no games to be played', function () {
+            const result = mcSample([], scoring);
+            expect(result).to.be.an.instanceOf(Array).with.lengthOf(0);
+        });
+
+        const oneGameWithCertainWin = [
+                {
+                    team1: 'Manchester City',
+                    team2: 'Manchester United',
+                    prob1: 1,
+                    prob2: 0,
+                    probtie: 0
+                }
+            ],
+            oneGameWithCertainTie = [
+                {
+                    team1: 'Manchester City',
+                    team2: 'Manchester United',
+                    prob1: 0,
+                    prob2: 0,
+                    probtie: 1
+                }
+            ],
+            oneGameWithCertainLoss = [
+                {
+                    team1: 'Manchester City',
+                    team2: 'Manchester United',
+                    prob1: 0,
+                    prob2: 1,
+                    probtie: 0
+                }
+            ];
+
+        it('should give a standing with team1 on top when team1 is guaranteed to win the only game', function () {
+            const result = mcSample(oneGameWithCertainWin, scoring);
+            expect(result).to.be.an.instanceOf(Array).with.lengthOf(2);
+
+            const cityPts = result.find(({team}) => team === 'Manchester City').points,
+                unitedPts = result.find(({team}) => team === 'Manchester United').points;
+
+            expect(cityPts).to.be.above(unitedPts);
+        });
+
+        it('should give a standing with team2 on top when team2 is guaranteed to win the only game', function () {
+            const result = mcSample(oneGameWithCertainLoss, scoring);
+            expect(result).to.be.an.instanceOf(Array).with.lengthOf(2);
+
+            const cityPts = result.find(({team}) => team === 'Manchester City').points,
+                unitedPts = result.find(({team}) => team === 'Manchester United').points;
+
+            expect(cityPts).to.be.below(unitedPts);
+        });
+
+        it('should give a standing with team1 and team2 equal when the only game is guaranteed to be tied', function () {
+            const result = mcSample(oneGameWithCertainTie, scoring);
+            expect(result).to.be.an.instanceOf(Array).with.lengthOf(2);
+
+            const cityPts = result.find(({team}) => team === 'Manchester City').points,
+                unitedPts = result.find(({team}) => team === 'Manchester United').points;
+
+            expect(cityPts).to.be.equal(unitedPts);
+        });
+
+        const someGames = [
+            {
+                team1: 'Manchester United',
+                team2: 'Manchester City',
+                prob1: 0.4,
+                prob2: 0.4,
+                probtie: 0.2
+            },
+            {
+                team1: 'Manchester City',
+                team2: 'Liverpool',
+                prob1: 0.5,
+                prob2: 0.3,
+                probtie: 0.2
+            },
+            {
+                team1: 'Chelsea',
+                team2: 'Liverpool',
+                prob1: 0.3,
+                prob2: 0.4,
+                probtie: 0.3
+            },
+            {
+                team1: 'Manchester United',
+                team2: 'Crystal Palace',
+                prob1: 0.8,
+                prob2: 0.05,
+                probtie: 0.15
+            },
+            {
+                team1: 'Newcastle United',
+                team2: 'Manchester City',
+                prob1: 0.1,
+                prob2: 0.7,
+                probtie: 0.2
+            }
+        ];
+
+        it('should preserve team names when run on a list of games', function () {
+            const result = mcSample(someGames, scoring),
+                teamNames = ['Manchester City', 'Manchester United', 'Liverpool',
+                    'Chelsea', 'Crystal Palace', 'Newcastle United'];
+
+            teamNames.forEach(teamA => {
+                expect(result).to.satisfy(r => r.some(({team}) => team === teamA));
+            });
         });
     });
 });

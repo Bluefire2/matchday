@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="27cb4be7-49dc-4710-833d-5f0e482889cd" name="Default" comment="">
+    <list default="true" id="27cb4be7-49dc-4710-833d-5f0e482889cd" name="Default" comment="Change the specification of addStandings.&#10;&#10;Previously, addStandings required that the two arrays both have exactly the same teams; this is no longer the case. If a team exists in one standing array but not the other, the values for that team will simply be copied into the resulting array, similar to set union.">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/index.js" afterPath="$PROJECT_DIR$/src/index.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/util.js" afterPath="$PROJECT_DIR$/src/util.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/test.js" afterPath="$PROJECT_DIR$/test/test.js" />
     </list>
@@ -21,28 +22,28 @@
       <file leaf-file-name="index.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/index.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="363">
-              <caret line="24" column="45" lean-forward="false" selection-start-line="24" selection-start-column="45" selection-end-line="24" selection-end-column="45" />
+            <state relative-caret-position="105">
+              <caret line="5" column="41" lean-forward="false" selection-start-line="5" selection-start-column="41" selection-end-line="5" selection-end-column="41" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="util.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="util.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/util.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="153">
-              <caret line="126" column="91" lean-forward="false" selection-start-line="126" selection-start-column="91" selection-end-line="126" selection-end-column="91" />
+            <state relative-caret-position="384">
+              <caret line="242" column="46" lean-forward="false" selection-start-line="242" selection-start-column="46" selection-end-line="242" selection-end-column="46" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="test.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="test.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/test/test.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="489">
-              <caret line="171" column="36" lean-forward="false" selection-start-line="171" selection-start-column="36" selection-end-line="171" selection-end-column="36" />
+            <state relative-caret-position="-553">
+              <caret line="88" column="52" lean-forward="true" selection-start-line="88" selection-start-column="52" selection-end-line="88" selection-end-column="52" />
               <folding />
             </state>
           </provider>
@@ -92,6 +93,7 @@
   <component name="FindInProjectRecents">
     <findStrings>
       <find>matchday</find>
+      <find>console.log</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -106,8 +108,8 @@
         <option value="$PROJECT_DIR$/src/constants.js" />
         <option value="$PROJECT_DIR$/package.json" />
         <option value="$PROJECT_DIR$/src/index.js" />
-        <option value="$PROJECT_DIR$/src/util.js" />
         <option value="$PROJECT_DIR$/test/test.js" />
+        <option value="$PROJECT_DIR$/src/util.js" />
       </list>
     </option>
   </component>
@@ -206,8 +208,8 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Mocha.util.getLeagueStandings.should work :)">
-    <configuration name="#matchday.should return an empty object when given an invalid league" type="mocha-javascript-test-runner" factoryName="Mocha" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="Mocha.util.addStandings().should add uneven arrays of standings">
+    <configuration name="util.addStandings().should add uneven arrays of standings" type="mocha-javascript-test-runner" factoryName="Mocha" temporary="true" nameIsGenerated="true">
       <node-interpreter>project</node-interpreter>
       <node-options />
       <working-directory>$PROJECT_DIR$</working-directory>
@@ -218,11 +220,12 @@
       <test-kind>TEST</test-kind>
       <test-file>$PROJECT_DIR$/test/test.js</test-file>
       <test-names>
-        <name value="#matchday" />
-        <name value="should return an empty object when given an invalid league" />
+        <name value="util" />
+        <name value="addStandings()" />
+        <name value="should add uneven arrays of standings" />
       </test-names>
     </configuration>
-    <configuration name="#numFormatter.should always return four" type="mocha-javascript-test-runner" factoryName="Mocha" temporary="true" nameIsGenerated="true">
+    <configuration name="util.addStandings().should correctly add arrays of a single standing" type="mocha-javascript-test-runner" factoryName="Mocha" temporary="true" nameIsGenerated="true">
       <node-interpreter>project</node-interpreter>
       <node-options />
       <working-directory>$PROJECT_DIR$</working-directory>
@@ -233,22 +236,9 @@
       <test-kind>TEST</test-kind>
       <test-file>$PROJECT_DIR$/test/test.js</test-file>
       <test-names>
-        <name value="#numFormatter" />
-        <name value="should always return four" />
-      </test-names>
-    </configuration>
-    <configuration name="matchday" type="mocha-javascript-test-runner" factoryName="Mocha" temporary="true" nameIsGenerated="true">
-      <node-interpreter>project</node-interpreter>
-      <node-options />
-      <working-directory>$PROJECT_DIR$</working-directory>
-      <pass-parent-env>true</pass-parent-env>
-      <envs />
-      <ui>bdd</ui>
-      <extra-mocha-options />
-      <test-kind>SUITE</test-kind>
-      <test-file>$PROJECT_DIR$/test/test.js</test-file>
-      <test-names>
-        <name value="matchday" />
+        <name value="util" />
+        <name value="addStandings()" />
+        <name value="should correctly add arrays of a single standing" />
       </test-names>
     </configuration>
     <configuration name="util.getLeagueStandings.should work :)" type="mocha-javascript-test-runner" factoryName="Mocha" temporary="true" nameIsGenerated="true">
@@ -267,18 +257,52 @@
         <name value="should work :)" />
       </test-names>
     </configuration>
-    <list size="4">
-      <item index="0" class="java.lang.String" itemvalue="Mocha.#numFormatter.should always return four" />
-      <item index="1" class="java.lang.String" itemvalue="Mocha.#matchday.should return an empty object when given an invalid league" />
-      <item index="2" class="java.lang.String" itemvalue="Mocha.matchday" />
-      <item index="3" class="java.lang.String" itemvalue="Mocha.util.getLeagueStandings.should work :)" />
+    <configuration name="util.mcSample().should give a standing with team2 on top when team2 is guaranteed to win the only game" type="mocha-javascript-test-runner" factoryName="Mocha" temporary="true" nameIsGenerated="true">
+      <node-interpreter>project</node-interpreter>
+      <node-options />
+      <working-directory>$PROJECT_DIR$</working-directory>
+      <pass-parent-env>true</pass-parent-env>
+      <envs />
+      <ui>bdd</ui>
+      <extra-mocha-options />
+      <test-kind>TEST</test-kind>
+      <test-file>$PROJECT_DIR$/test/test.js</test-file>
+      <test-names>
+        <name value="util" />
+        <name value="mcSample()" />
+        <name value="should give a standing with team2 on top when team2 is guaranteed to win the only game" />
+      </test-names>
+    </configuration>
+    <configuration name="util.mcSample().should preserve team names when run on a list of games" type="mocha-javascript-test-runner" factoryName="Mocha" temporary="true" nameIsGenerated="true">
+      <node-interpreter>project</node-interpreter>
+      <node-options />
+      <working-directory>$PROJECT_DIR$</working-directory>
+      <pass-parent-env>true</pass-parent-env>
+      <envs />
+      <ui>bdd</ui>
+      <extra-mocha-options />
+      <test-kind>TEST</test-kind>
+      <test-file>$PROJECT_DIR$/test/test.js</test-file>
+      <test-names>
+        <name value="util" />
+        <name value="mcSample()" />
+        <name value="should preserve team names when run on a list of games" />
+      </test-names>
+    </configuration>
+    <list size="5">
+      <item index="0" class="java.lang.String" itemvalue="Mocha.util.getLeagueStandings.should work :)" />
+      <item index="1" class="java.lang.String" itemvalue="Mocha.util.addStandings().should correctly add arrays of a single standing" />
+      <item index="2" class="java.lang.String" itemvalue="Mocha.util.mcSample().should give a standing with team2 on top when team2 is guaranteed to win the only game" />
+      <item index="3" class="java.lang.String" itemvalue="Mocha.util.mcSample().should preserve team names when run on a list of games" />
+      <item index="4" class="java.lang.String" itemvalue="Mocha.util.addStandings().should add uneven arrays of standings" />
     </list>
     <recent_temporary>
-      <list size="4">
-        <item index="0" class="java.lang.String" itemvalue="Mocha.util.getLeagueStandings.should work :)" />
-        <item index="1" class="java.lang.String" itemvalue="Mocha.matchday" />
-        <item index="2" class="java.lang.String" itemvalue="Mocha.#matchday.should return an empty object when given an invalid league" />
-        <item index="3" class="java.lang.String" itemvalue="Mocha.#numFormatter.should always return four" />
+      <list size="5">
+        <item index="0" class="java.lang.String" itemvalue="Mocha.util.addStandings().should add uneven arrays of standings" />
+        <item index="1" class="java.lang.String" itemvalue="Mocha.util.mcSample().should preserve team names when run on a list of games" />
+        <item index="2" class="java.lang.String" itemvalue="Mocha.util.mcSample().should give a standing with team2 on top when team2 is guaranteed to win the only game" />
+        <item index="3" class="java.lang.String" itemvalue="Mocha.util.addStandings().should correctly add arrays of a single standing" />
+        <item index="4" class="java.lang.String" itemvalue="Mocha.util.getLeagueStandings.should work :)" />
       </list>
     </recent_temporary>
   </component>
@@ -295,7 +319,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1527357303840</updated>
-      <workItem from="1527357305074" duration="33686000" />
+      <workItem from="1527357305074" duration="41898000" />
     </task>
     <task id="LOCAL-00001" summary="Calculate standings and games in matchday main function">
       <created>1527526682750</created>
@@ -304,37 +328,50 @@
       <option name="project" value="LOCAL" />
       <updated>1527526682750</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Change the specification of addStandings.&#10;&#10;Previously, addStandings required that the two arrays both have exactly the same teams; this is no longer the case. If a team exists in one standing array but not the other, the values for that team will simply be copied into the resulting array, similar to set union.">
+      <created>1527537970206</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1527537970206</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="#matchday_should_return_an_empty_object_when_given_an_invalid_league - 2018.05.26 at 17h 37m 09s.xml">
-      <configuration name="#matchday.should return an empty object when given an invalid league" configurationId="mocha-javascript-test-runner" />
+    <history-entry file="util_addStandings()_should_add_uneven_arrays_of_standings - 2018.05.28 at 17h 57m 33s.xml">
+      <configuration name="util.addStandings().should add uneven arrays of standings" configurationId="mocha-javascript-test-runner" />
     </history-entry>
-    <history-entry file="#numFormatter_should_always_return_four - 2018.05.26 at 14h 20m 20s.xml">
-      <configuration name="#numFormatter.should always return four" configurationId="mocha-javascript-test-runner" />
+    <history-entry file="util_addStandings()_should_add_uneven_arrays_of_standings - 2018.05.28 at 17h 58m 11s.xml">
+      <configuration name="util.addStandings().should add uneven arrays of standings" configurationId="mocha-javascript-test-runner" />
     </history-entry>
-    <history-entry file="matchday - 2018.05.27 at 00h 40m 52s.xml">
-      <configuration name="matchday" configurationId="mocha-javascript-test-runner" />
+    <history-entry file="util_addStandings()_should_add_uneven_arrays_of_standings - 2018.05.28 at 18h 00m 01s.xml">
+      <configuration name="util.addStandings().should add uneven arrays of standings" configurationId="mocha-javascript-test-runner" />
     </history-entry>
-    <history-entry file="matchday - 2018.05.27 at 00h 41m 10s.xml">
-      <configuration name="matchday" configurationId="mocha-javascript-test-runner" />
+    <history-entry file="util_mcSample()_should_preserve_team_names_when_run_on_a_list_of_games - 2018.05.28 at 17h 48m 22s.xml">
+      <configuration name="util.mcSample().should preserve team names when run on a list of games" configurationId="mocha-javascript-test-runner" />
     </history-entry>
-    <history-entry file="matchday - 2018.05.27 at 00h 41m 34s.xml">
-      <configuration name="matchday" configurationId="mocha-javascript-test-runner" />
+    <history-entry file="util_mcSample()_should_preserve_team_names_when_run_on_a_list_of_games - 2018.05.28 at 17h 48m 41s.xml">
+      <configuration name="util.mcSample().should preserve team names when run on a list of games" configurationId="mocha-javascript-test-runner" />
     </history-entry>
-    <history-entry file="matchday - 2018.05.27 at 00h 41m 58s.xml">
-      <configuration name="matchday" configurationId="mocha-javascript-test-runner" />
+    <history-entry file="util_mcSample()_should_preserve_team_names_when_run_on_a_list_of_games - 2018.05.28 at 17h 49m 04s.xml">
+      <configuration name="util.mcSample().should preserve team names when run on a list of games" configurationId="mocha-javascript-test-runner" />
     </history-entry>
-    <history-entry file="util_getLeagueStandings_should_work__) - 2018.05.27 at 15h 26m 21s.xml">
-      <configuration name="util.getLeagueStandings.should work :)" configurationId="mocha-javascript-test-runner" />
+    <history-entry file="util_mcSample()_should_preserve_team_names_when_run_on_a_list_of_games - 2018.05.28 at 17h 49m 51s.xml">
+      <configuration name="util.mcSample().should preserve team names when run on a list of games" configurationId="mocha-javascript-test-runner" />
     </history-entry>
-    <history-entry file="util_getLeagueStandings_should_work__) - 2018.05.27 at 15h 26m 53s.xml">
-      <configuration name="util.getLeagueStandings.should work :)" configurationId="mocha-javascript-test-runner" />
+    <history-entry file="util_mcSample()_should_preserve_team_names_when_run_on_a_list_of_games - 2018.05.28 at 17h 51m 37s.xml">
+      <configuration name="util.mcSample().should preserve team names when run on a list of games" configurationId="mocha-javascript-test-runner" />
+    </history-entry>
+    <history-entry file="util_mcSample()_should_preserve_team_names_when_run_on_a_list_of_games - 2018.05.28 at 17h 52m 04s.xml">
+      <configuration name="util.mcSample().should preserve team names when run on a list of games" configurationId="mocha-javascript-test-runner" />
+    </history-entry>
+    <history-entry file="util_mcSample()_should_preserve_team_names_when_run_on_a_list_of_games - 2018.05.28 at 17h 53m 29s.xml">
+      <configuration name="util.mcSample().should preserve team names when run on a list of games" configurationId="mocha-javascript-test-runner" />
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="33686000" />
+    <option name="totallyTimeSpent" value="41898000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -351,6 +388,7 @@
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24960339" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32915717" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32915717" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32915717" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32915717" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -375,7 +413,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Calculate standings and games in matchday main function" />
-    <option name="LAST_COMMIT_MESSAGE" value="Calculate standings and games in matchday main function" />
+    <MESSAGE value="Change the specification of addStandings.&#10;&#10;Previously, addStandings required that the two arrays both have exactly the same teams; this is no longer the case. If a team exists in one standing array but not the other, the values for that team will simply be copied into the resulting array, similar to set union." />
+    <option name="LAST_COMMIT_MESSAGE" value="Change the specification of addStandings.&#10;&#10;Previously, addStandings required that the two arrays both have exactly the same teams; this is no longer the case. If a team exists in one standing array but not the other, the values for that team will simply be copied into the resulting array, similar to set union." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -434,24 +473,24 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/index.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="363">
-          <caret line="24" column="45" lean-forward="false" selection-start-line="24" selection-start-column="45" selection-end-line="24" selection-end-column="45" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/util.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="153">
-          <caret line="126" column="91" lean-forward="false" selection-start-line="126" selection-start-column="91" selection-end-line="126" selection-end-column="91" />
+        <state relative-caret-position="105">
+          <caret line="5" column="41" lean-forward="false" selection-start-line="5" selection-start-column="41" selection-end-line="5" selection-end-column="41" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/test/test.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="489">
-          <caret line="171" column="36" lean-forward="false" selection-start-line="171" selection-start-column="36" selection-end-line="171" selection-end-column="36" />
+        <state relative-caret-position="-553">
+          <caret line="88" column="52" lean-forward="true" selection-start-line="88" selection-start-column="52" selection-end-line="88" selection-end-column="52" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/util.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="384">
+          <caret line="242" column="46" lean-forward="false" selection-start-line="242" selection-start-column="46" selection-end-line="242" selection-end-column="46" />
           <folding />
         </state>
       </provider>
