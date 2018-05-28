@@ -28,6 +28,31 @@ const leagueToID = league => {
 module.exports.leagueToID = leagueToID;
 
 /**
+ * Returns a function that maps wins, losses and ties to points for a team in league [league]. A win is represented by
+ * [1], a tie by [0], and a loss by [-1].
+ *
+ * @param league
+ * @returns {function(*)}
+ */
+module.exports.pointsFromGame = league => {
+    // TODO: make this depend on the league
+    const win = 3,
+        tie = 1,
+        loss = 0;
+
+    return result => {
+        switch (result) {
+            case 1:
+                return win;
+            case 0:
+                return tie;
+            case -1:
+                return loss;
+        }
+    };
+};
+
+/**
  * Returns the URL to parse league standings from for league [league]. To be used in conjunction with [getLeagueStandings].
  *
  * @param league
