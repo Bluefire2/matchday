@@ -67,7 +67,7 @@ module.exports.pointsFromGame = league => {
 module.exports.winTieLossSample = (pWin, pTie, pLoss) => {
     const r = Math.random();
 
-    if(r < pWin) {
+    if (r < pWin) {
         return 1;
     } else if (r < pWin + pTie) {
         return 0;
@@ -156,15 +156,15 @@ module.exports.getLeagueGames = Promise.method(function (league, daysAhead = 7) 
 });
 
 /**
- * Returns the standing of [teamA] in the [standings] array; if there is no such team in [standings] then returns
- * undefined.
+ * Returns the *index* of the standing of [teamA] in the [standings] array; if there is no such team in [standings] then
+ * returns undefined.
  *
  * @param standings
  * @param teamA
- * @returns {Object}
+ * @returns {number}
  */
 const getStandingOfTeam = (standings, teamA) => {
-    return standings.find(({team}) => team === teamA);
+    return standings.findIndex(({team}) => team === teamA);
 };
 
 /**
@@ -173,19 +173,28 @@ const getStandingOfTeam = (standings, teamA) => {
  *
  * Preconditions:
  *  - [standingsA] and [standingsB] must be proper standings objects
- *  - Each team that exists in [standingsA] must also exist in [standingsB], and vice versa
  *
  * @param standingsA
  * @param standingsB
  * @returns {Array}
  */
 module.exports.addStandings = (standingsA, standingsB) => {
-    return standingsA.map(({team, goalDiff, points}) => {
-        const {goalDiff: addGoalDiff, points: addPoints} = getStandingOfTeam(standingsB, team);
-        return {
-            team,
-            goalDiff: goalDiff + addGoalDiff,
-            points: points + addPoints
-        };
-    });
+    const totalStandings = JSON.parse(JSON.stringify(standingsA)); // deep copy
+
+    // can't spell "functional" without "fun" :)
+    return standingsB.reduce((acc, {team, goalDiff, points}) => {
+        const standingSoFar = getStandingOfTeam(acc, team);
+        if (standingSoFar === -1) {
+            // this is a new team, so just append
+            // Array.concat shouldn't be worse than O(1) if the second "array" only has one item
+            return Array.concat(acc, [{team, goalDiff, points}]);
+        } else {
+            // this team already exists in [standingsA], so we need to alter it
+            const {goalDiff: goalDiffSoFar, points: pointsSoFar} = acc[standingSoFar];
+
+            // TODO: make this fully functional (non-mutating) if memory isn't an issue:
+            totalStandings[standingSoFar] = {team, goalDiff: goalDiff + goalDiffSoFar, points: points + pointsSoFar};
+            return totalStandings;
+        }
+    }, totalStandings);
 };
