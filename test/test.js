@@ -13,20 +13,20 @@ const {LEAGUES} = require('../src/constants'),
     matchday = require('../src/index'),
     {leagueToID, getLeagueGames, getLeagueStandings, addStandings, pointsFromGame, mcSample} = require('../src/util');
 
-const goodLeagueNames = [
-    'PREMIER',
-    'BRASILEIRAO'
-];
-
-const badLeagueNames = [
-    'LIGUE 1',
-    'SERIE A',
-    'premier',
-    'abcdef',
-    'hello world'
-];
-
 describe('util', function () {
+    const goodLeagueNames = [
+        'PREMIER',
+        'BRASILEIRAO'
+    ];
+
+    const badLeagueNames = [
+        'LIGUE 1',
+        'SERIE A',
+        'premier',
+        'abcdef',
+        'hello world'
+    ];
+
     describe('leagueToID()', function () {
         const leagueToIDTests = [
             {args: [LEAGUES['PREMIER']], expected: 2411},
@@ -173,12 +173,12 @@ describe('util', function () {
         });
 
         it('should add uneven arrays of standings', function () {
-            const unevenA = [ { team: 'Manchester United', goalDiff: 0, points: 3 },
-                { team: 'Manchester City', goalDiff: 0, points: 3 },
-                { team: 'Liverpool', goalDiff: -0, points: 0 } ];
+            const unevenA = [{team: 'Manchester United', goalDiff: 0, points: 3},
+                {team: 'Manchester City', goalDiff: 0, points: 3},
+                {team: 'Liverpool', goalDiff: -0, points: 0}];
 
-            const unevenB = [ { team: 'Chelsea', goalDiff: 0, points: 3 },
-                { team: 'Liverpool', goalDiff: -0, points: 0 } ];
+            const unevenB = [{team: 'Chelsea', goalDiff: 0, points: 3},
+                {team: 'Liverpool', goalDiff: -0, points: 0}];
 
             const teamNames = ['Manchester City', 'Manchester United', 'Liverpool',
                 'Chelsea'];
@@ -302,9 +302,7 @@ describe('util', function () {
                 teamNames = ['Manchester City', 'Manchester United', 'Liverpool',
                     'Chelsea', 'Crystal Palace', 'Newcastle United'];
 
-            teamNames.forEach(teamA => {
-                expect(result).to.satisfy(r => r.some(({team}) => team === teamA));
-            });
+            expect(teamNames).to.all.satisfy(teamA => result.some(({team}) => team === teamA));
         });
     });
 });
