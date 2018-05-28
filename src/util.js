@@ -92,18 +92,16 @@ module.exports.getLeagueGames = Promise.method(function (league, daysAhead = 7) 
         return fs.readFileAsync(filepath).then(csv => {
             return parse(csv, {columns: true});
         }).then(output => {
-            const matchesFromLeagueBeforeMaxDate =
-                output
-                    .filter(({league_id}) => parseInt(league_id) === leagueID) // filter league
-                    .filter(({date}) => { // filter date
-                        const d = moment(date, 'YYYY-MM-DD');
-                        return d.isAfter(moment()) && d.isBefore(maxDate);
-                    })
-                    .map(({date, team1, team2, prob1, prob2, probtie, proj_score1, proj_score2}) => {
-                        // keep only relevant properties
-                        return {date, team1, team2, prob1, prob2, probtie, proj_score1, proj_score2};
-                    });
-            return matchesFromLeagueBeforeMaxDate;
+            return output
+                .filter(({league_id}) => parseInt(league_id) === leagueID) // filter league
+                .filter(({date}) => { // filter date
+                    const d = moment(date, 'YYYY-MM-DD');
+                    return d.isAfter(moment()) && d.isBefore(maxDate);
+                })
+                .map(({date, team1, team2, prob1, prob2, probtie, proj_score1, proj_score2}) => {
+                    // keep only relevant properties
+                    return {date, team1, team2, prob1, prob2, probtie, proj_score1, proj_score2};
+                });
         });
     } else {
         throw new TypeError('Invalid league');
