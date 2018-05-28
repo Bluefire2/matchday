@@ -22,8 +22,6 @@ module.exports = (league, daysAhead = 7) => {
         const standings = values[0],
             games = values[1];
 
-        return new Promise((resolve, reject) => {
-            resolve({standings, games}); // for now don't do any calculations
-        });
+        return {standings, games}; // for now
     });
 };
