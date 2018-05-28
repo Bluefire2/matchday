@@ -105,3 +105,38 @@ module.exports.getLeagueGames = Promise.method(function (league, daysAhead = 7) 
         throw new TypeError('Invalid league');
     }
 });
+
+/**
+ * Returns the standing of [teamA] in the [standings] array; if there is no such team in [standings] then returns
+ * undefined.
+ *
+ * @param standings
+ * @param teamA
+ * @returns {Object}
+ */
+const getStandingOfTeam = (standings, teamA) => {
+    return standings.find(({team}) => team === teamA);
+};
+
+/**
+ * Adds two sets of team standings together. For each team, adds the goal difference and points. Returns the new
+ * standings array.
+ *
+ * Preconditions:
+ *  - [standingsA] and [standingsB] must be proper standings objects
+ *  - Each team that exists in [standingsA] must also exist in [standingsB], and vice versa
+ *
+ * @param standingsA
+ * @param standingsB
+ * @returns {Array}
+ */
+module.exports.addStandings = (standingsA, standingsB) => {
+    return standingsA.map(({team, goalDiff, points}) => {
+        const {goalDiff: addGoalDiff, points: addPoints} = getStandingOfTeam(standingsB, team);
+        return {
+            team,
+            goalDiff: goalDiff + addGoalDiff,
+            points: points + addPoints
+        };
+    });
+};
