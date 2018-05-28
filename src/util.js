@@ -55,7 +55,7 @@ module.exports.getLeagueStandings = league => {
             const $ = cheerio.load(response.data),
                 rows = $('.standings.has-team-logos tbody tr');
 
-            const standings = rows.map(function (i, elem) {
+            return rows.map(function (i, elem) {
                 const tds = $(this).find('td'),
                     teamTd = $(tds[0]),
                     team = $(teamTd).find('span.team-names').text(),
@@ -69,8 +69,6 @@ module.exports.getLeagueStandings = league => {
                     points
                 };
             }).get();
-
-            return standings;
         });
 };
 
