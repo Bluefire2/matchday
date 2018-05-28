@@ -28,7 +28,7 @@ const leagueToID = league => {
 module.exports.leagueToID = leagueToID;
 
 /**
- * Returns a function that maps wins, losses and ties to points for a team in league [league]. A win is represented by
+ * Returns a function that maps wins, losses and ties to points for teams in league [league]. A win is represented by
  * [1], a tie by [0], and a loss by [-1].
  *
  * @param league
@@ -43,13 +43,37 @@ module.exports.pointsFromGame = league => {
     return result => {
         switch (result) {
             case 1:
-                return win;
+                return [win, loss];
             case 0:
-                return tie;
+                return [tie, tie];
             case -1:
-                return loss;
+                return [loss, win];
         }
     };
+};
+
+/**
+ * Returns, via a random sample, whether the game with probabilities specified by the parameters resulted in a win,
+ * loss, or tie. A win is represented by [1], a tie by [0], and a loss by [-1].
+ *
+ * Preconditions:
+ *  - [pWin], [pTie] and [pLoss] must add to 1.
+ *
+ * @param {number} pWin The probability of winning the game.
+ * @param {number} pTie The probability of drawing the game.
+ * @param {number} pLoss The probability of losing the game.
+ * @returns {number}
+ */
+module.exports.winTieLossSample = (pWin, pTie, pLoss) => {
+    const r = Math.random();
+
+    if(r < pWin) {
+        return 1;
+    } else if (r < pWin + pTie) {
+        return 0;
+    } else {
+        return -1;
+    }
 };
 
 /**
