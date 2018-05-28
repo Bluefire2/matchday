@@ -11,7 +11,7 @@ const expect = chai.expect;
 
 const {LEAGUES} = require('../src/constants'),
     matchday = require('../src/index'),
-    {leagueToID, getLeagueGames, getLeagueStandings, addStandings, pointsFromGame, mcSample} = require('../src/util');
+    {leagueToID, getLeagueGames, getLeagueStandings, addStandings, pointsFromGame, mcSample, mcSampler} = require('../src/util');
 
 describe('util', function () {
     const goodLeagueNames = [
@@ -297,12 +297,80 @@ describe('util', function () {
             }
         ];
 
-        it('should preserve team names when run on a list of games', function () {
-            const result = mcSample(someGames, scoring),
-                teamNames = ['Manchester City', 'Manchester United', 'Liverpool',
-                    'Chelsea', 'Crystal Palace', 'Newcastle United'];
+        const someTeamNames = ['Manchester City', 'Manchester United', 'Liverpool',
+            'Chelsea', 'Crystal Palace', 'Newcastle United'];
 
-            expect(teamNames).to.all.satisfy(teamA => result.some(({team}) => team === teamA));
+        it('should preserve team names when run on a list of games', function () {
+            const result = mcSample(someGames, scoring);
+
+            expect(someTeamNames).to.all.satisfy(teamA => result.some(({team}) => team === teamA));
+        });
+    });
+
+    describe('mcSampler', function () {
+        const scoring = pointsFromGame('PREMIER'),
+            sampler = mcSampler(scoring);
+
+        const someGames = [
+            {
+                team1: 'Manchester United',
+                team2: 'Manchester City',
+                prob1: 0.4,
+                prob2: 0.4,
+                probtie: 0.2
+            },
+            {
+                team1: 'Manchester City',
+                team2: 'Liverpool',
+                prob1: 0.5,
+                prob2: 0.3,
+                probtie: 0.2
+            },
+            {
+                team1: 'Chelsea',
+                team2: 'Liverpool',
+                prob1: 0.3,
+                prob2: 0.4,
+                probtie: 0.3
+            },
+            {
+                team1: 'Manchester United',
+                team2: 'Crystal Palace',
+                prob1: 0.8,
+                prob2: 0.05,
+                probtie: 0.15
+            },
+            {
+                team1: 'Newcastle United',
+                team2: 'Manchester City',
+                prob1: 0.1,
+                prob2: 0.7,
+                probtie: 0.2
+            }
+        ];
+
+        const someTeamNames = ['Manchester City', 'Manchester United', 'Liverpool',
+            'Chelsea', 'Crystal Palace', 'Newcastle United'];
+
+        it('should be equivalent to mcSample when run with N = 1', function () {
+            const samples = sampler(someGames, 1);
+            expect(samples).to.eventually.be.an.instanceOf(Array).with.lengthOf(1);
+
+
+            expect(samples).to.eventually.all.satisfy(sample => {
+                return someTeamNames.every(teamA => sample.some(({team}) => team === teamA));
+            });
+        });
+
+        const testN = 10000;
+        it(`should preserve team names when run with N = ${testN}`, function () {
+            const samples = sampler(someGames, testN);
+            expect(samples).to.eventually.be.an.instanceOf(Array).with.lengthOf(testN);
+
+
+            expect(samples).to.eventually.all.satisfy(sample => {
+                return someTeamNames.every(teamA => sample.some(({team}) => team === teamA));
+            });
         });
     });
 });

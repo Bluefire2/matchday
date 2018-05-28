@@ -3,7 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="27cb4be7-49dc-4710-833d-5f0e482889cd" name="Default" comment="Change the specification of addStandings.&#10;&#10;Previously, addStandings required that the two arrays both have exactly the same teams; this is no longer the case. If a team exists in one standing array but not the other, the values for that team will simply be copied into the resulting array, similar to set union.">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/index.js" afterPath="$PROJECT_DIR$/src/index.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/util.js" afterPath="$PROJECT_DIR$/src/util.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/test.js" afterPath="$PROJECT_DIR$/test/test.js" />
     </list>
@@ -32,8 +31,8 @@
       <file leaf-file-name="util.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/util.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="384">
-              <caret line="242" column="46" lean-forward="false" selection-start-line="242" selection-start-column="46" selection-end-line="242" selection-end-column="46" />
+            <state relative-caret-position="258">
+              <caret line="258" column="42" lean-forward="false" selection-start-line="258" selection-start-column="42" selection-end-line="258" selection-end-column="42" />
               <folding />
             </state>
           </provider>
@@ -42,9 +41,14 @@
       <file leaf-file-name="test.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/test/test.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-553">
-              <caret line="88" column="52" lean-forward="true" selection-start-line="88" selection-start-column="52" selection-end-line="88" selection-end-column="52" />
-              <folding />
+            <state relative-caret-position="405">
+              <caret line="370" column="26" lean-forward="false" selection-start-line="370" selection-start-column="26" selection-end-line="370" selection-end-column="26" />
+              <folding>
+                <element signature="e#718#1165#0" expanded="false" />
+                <element signature="e#1218#2423#0" expanded="false" />
+                <element signature="e#2472#3405#0" expanded="false" />
+                <element signature="e#3452#6736#0" expanded="false" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -94,6 +98,9 @@
     <findStrings>
       <find>matchday</find>
       <find>console.log</find>
+      <find>eventually.all</find>
+      <find>all</find>
+      <find>.all</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -108,8 +115,8 @@
         <option value="$PROJECT_DIR$/src/constants.js" />
         <option value="$PROJECT_DIR$/package.json" />
         <option value="$PROJECT_DIR$/src/index.js" />
-        <option value="$PROJECT_DIR$/test/test.js" />
         <option value="$PROJECT_DIR$/src/util.js" />
+        <option value="$PROJECT_DIR$/test/test.js" />
       </list>
     </option>
   </component>
@@ -208,7 +215,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Mocha.util.addStandings().should add uneven arrays of standings">
+  <component name="RunManager" selected="Mocha.util.mcSample().should preserve team names when run on a list of games">
     <configuration name="util.addStandings().should add uneven arrays of standings" type="mocha-javascript-test-runner" factoryName="Mocha" temporary="true" nameIsGenerated="true">
       <node-interpreter>project</node-interpreter>
       <node-options />
@@ -298,8 +305,8 @@
     </list>
     <recent_temporary>
       <list size="5">
-        <item index="0" class="java.lang.String" itemvalue="Mocha.util.addStandings().should add uneven arrays of standings" />
-        <item index="1" class="java.lang.String" itemvalue="Mocha.util.mcSample().should preserve team names when run on a list of games" />
+        <item index="0" class="java.lang.String" itemvalue="Mocha.util.mcSample().should preserve team names when run on a list of games" />
+        <item index="1" class="java.lang.String" itemvalue="Mocha.util.addStandings().should add uneven arrays of standings" />
         <item index="2" class="java.lang.String" itemvalue="Mocha.util.mcSample().should give a standing with team2 on top when team2 is guaranteed to win the only game" />
         <item index="3" class="java.lang.String" itemvalue="Mocha.util.addStandings().should correctly add arrays of a single standing" />
         <item index="4" class="java.lang.String" itemvalue="Mocha.util.getLeagueStandings.should work :)" />
@@ -319,7 +326,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1527357303840</updated>
-      <workItem from="1527357305074" duration="41898000" />
+      <workItem from="1527357305074" duration="43879000" />
     </task>
     <task id="LOCAL-00001" summary="Calculate standings and games in matchday main function">
       <created>1527526682750</created>
@@ -348,9 +355,6 @@
     <history-entry file="util_addStandings()_should_add_uneven_arrays_of_standings - 2018.05.28 at 18h 00m 01s.xml">
       <configuration name="util.addStandings().should add uneven arrays of standings" configurationId="mocha-javascript-test-runner" />
     </history-entry>
-    <history-entry file="util_mcSample()_should_preserve_team_names_when_run_on_a_list_of_games - 2018.05.28 at 17h 48m 22s.xml">
-      <configuration name="util.mcSample().should preserve team names when run on a list of games" configurationId="mocha-javascript-test-runner" />
-    </history-entry>
     <history-entry file="util_mcSample()_should_preserve_team_names_when_run_on_a_list_of_games - 2018.05.28 at 17h 48m 41s.xml">
       <configuration name="util.mcSample().should preserve team names when run on a list of games" configurationId="mocha-javascript-test-runner" />
     </history-entry>
@@ -369,9 +373,12 @@
     <history-entry file="util_mcSample()_should_preserve_team_names_when_run_on_a_list_of_games - 2018.05.28 at 17h 53m 29s.xml">
       <configuration name="util.mcSample().should preserve team names when run on a list of games" configurationId="mocha-javascript-test-runner" />
     </history-entry>
+    <history-entry file="util_mcSample()_should_preserve_team_names_when_run_on_a_list_of_games - 2018.05.28 at 18h 18m 49s.xml">
+      <configuration name="util.mcSample().should preserve team names when run on a list of games" configurationId="mocha-javascript-test-runner" />
+    </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="41898000" />
+    <option name="totallyTimeSpent" value="43879000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -481,16 +488,21 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/test/test.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-553">
-          <caret line="88" column="52" lean-forward="true" selection-start-line="88" selection-start-column="52" selection-end-line="88" selection-end-column="52" />
-          <folding />
+        <state relative-caret-position="405">
+          <caret line="370" column="26" lean-forward="false" selection-start-line="370" selection-start-column="26" selection-end-line="370" selection-end-column="26" />
+          <folding>
+            <element signature="e#718#1165#0" expanded="false" />
+            <element signature="e#1218#2423#0" expanded="false" />
+            <element signature="e#2472#3405#0" expanded="false" />
+            <element signature="e#3452#6736#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/util.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="384">
-          <caret line="242" column="46" lean-forward="false" selection-start-line="242" selection-start-column="46" selection-end-line="242" selection-end-column="46" />
+        <state relative-caret-position="258">
+          <caret line="258" column="42" lean-forward="false" selection-start-line="258" selection-start-column="42" selection-end-line="258" selection-end-column="42" />
           <folding />
         </state>
       </provider>

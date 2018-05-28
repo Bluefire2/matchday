@@ -215,7 +215,8 @@ module.exports.addStandings = addStandings;
  * values. This function should be generated from a league using [pointsFromGame].
  * @returns {Array} The standings from playing each game.
  */
-module.exports.mcSample = (games, pts) => {
+const mcSample = (games, pts) => {
+    // MapReduce :D
     const gameResults = games.map(({team1, team2, prob1, prob2, probtie}) => {
         // TODO: implement goal estimation for goal difference
         const [goals1, goals2] = [0, 0],
@@ -242,3 +243,24 @@ module.exports.mcSample = (games, pts) => {
     // add all of the mini standings
     return gameResults.reduce(addStandings, []);
 };
+
+module.exports.mcSample = mcSample;
+
+/**
+ * Creates a Monte Carlo sampler for a specific scoring function: a function that takes a certain number of Monte Carlo
+ * samples from an array of games, as above, and returns an array of the samples. The sampler takes the following
+ * parameters:
+ *  - [games]: the array of games.
+ *  - [N]: the number of samples to take.
+ *
+ * @param {Function} pts The scoring function; the same as the parameter of the same name in [mcSample].
+ * @returns {Function} The sampler function.
+ */
+module.exports.mcSampler = pts => Promise.method((games, N) => {
+    let samples = [];
+    for (let i = 0; i < N; i++) {
+        samples.push(mcSample(games, pts));
+    }
+
+    return samples;
+});
