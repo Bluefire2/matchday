@@ -3,7 +3,8 @@
 const constants = require('./constants'),
     LEAGUES = constants.LEAGUES;
 
-const {getLeagueStandings, getLeagueGames} = require('./util');
+const {getLeagueStandings, getLeagueGames} = require('./util'),
+    Promise = require('bluebird');
 
 /**
  * Fetch the following:
