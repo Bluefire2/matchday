@@ -131,7 +131,7 @@ module.exports.getLeagueStandings = league => {
 module.exports.getLeagueGames = Promise.method(function (league, daysAhead = 7) {
     // to round up to the nearest day, we can add 1 day and then round down:
     const maxDate = moment().add(daysAhead + 1, 'days').startOf('day');
-    const leagueID = leagueToID(LEAGUES[league]);
+    const leagueID = leagueToID(league);
     // for now, get data from the hardcoded .csv file
     // TODO: change this and instead fetch live data from the server
     const filepath = './data/spi_matches.csv';
