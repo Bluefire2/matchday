@@ -9,9 +9,9 @@ chai.use(chaiAsPromised);
 
 const expect = chai.expect;
 
-const {LEAGUES} = require('../src/constants'),
-    matchday = require('../src/index'),
-    {leagueToID, getLeagueGames, getLeagueStandings, addStandings, pointsFromGame, mcSample, mcSampler} = require('../src/util');
+const {LEAGUES} = require('../lib/constants'),
+    matchday = require('../lib/index'),
+    {leagueToID, getLeagueGames, getLeagueStandings, addStandings, pointsFromGame, mcSample, mcSampler} = require('../lib/util');
 
 
 const util = require('util'),

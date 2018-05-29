@@ -3,18 +3,24 @@
   "version": "0.1.0",
   "repository": "https://github.com/Bluefire2/matchday.git",
   "description": "",
-  "main": "src/index.js",
+  "main": "lib/index.js",
   "scripts": {
     "test": "mocha --reporter spec",
-    "cover": "node ./node_modules/istanbul/lib/cli.js cover node_modules/mocha/bin/_mocha -- -R spec test/*"
+    "cover": "node ./node_modules/istanbul/lib/cli.js cover node_modules/mocha/bin/_mocha -- -R spec test/*",
+    "build": "babel src/ -d lib/",
+    "prepublishOnly": "npm run build",
+    "flow": "flow"
   },
   "author": "Kyrylo Chernyshov <kc875@cornell.edu>",
   "license": "ISC",
   "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-flow": "^6.23.0",
     "chai": "^4.1.2",
     "chai-as-promised": "^7.1.1",
     "chai-things": "^0.2.0",
     "coveralls": "^3.0.1",
+    "flow-bin": "^0.73.0",
     "istanbul": "^0.4.5",
     "mocha": "^5.2.0"
   },
