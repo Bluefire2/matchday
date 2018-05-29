@@ -30,9 +30,9 @@ module.exports = (league: string, daysAhead: number = 7, N: number = 1000000): S
         });
 
     // TODO: use a better return type
-    return Promise.join(pStandings, pSamples, (baseStandings: Standings, samples: StandingsFrequency[]): Array => {
+    return Promise.join(pStandings, pSamples, (baseStandings: Standings, samples: StandingsFrequency[]): Array<Object> => {
         // for each sample, add the base standings
-        return samples.map(({standings, frequency}: StandingsFrequency): StandingsFrequency => {
+        return samples.map(({standings, frequency}: StandingsFrequency): Object => {
             return {
                 standings: addStandings(baseStandings, standings),
                 probability: frequency / N // normalise
