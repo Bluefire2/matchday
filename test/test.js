@@ -72,23 +72,16 @@ describe('util', function () {
     });
 
     describe('getLeagueGames()', function () {
-        badLeagueNames.forEach(elem => {
-            it(`should reject when given invalid league ${elem}`, function () {
-                const result = getLeagueGames(elem);
-                return expect(result).to.not.be.fulfilled;
-            });
-        });
-
         goodLeagueNames.forEach(elem => {
             it(`should resolve when given valid league ${elem}`, function () {
-                const result = getLeagueGames(elem);
+                const result = getLeagueGames(LEAGUES[elem]);
                 return expect(result).to.be.fulfilled;
             });
         });
 
         goodLeagueNames.forEach(elem => {
             it(`should resolve with array data when given valid league ${elem}`, function () {
-                const result = getLeagueGames(elem);
+                const result = getLeagueGames(LEAGUES[elem]);
                 result.then(data => {
                     // console.log(data); // for now
                 });
