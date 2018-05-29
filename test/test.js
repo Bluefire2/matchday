@@ -13,6 +13,10 @@ const {LEAGUES} = require('../src/constants'),
     matchday = require('../src/index'),
     {leagueToID, getLeagueGames, getLeagueStandings, addStandings, pointsFromGame, mcSample, mcSampler} = require('../src/util');
 
+
+const util = require('util'),
+    Promise = require('bluebird');
+
 describe('util', function () {
     const goodLeagueNames = [
         'PREMIER',
@@ -307,7 +311,7 @@ describe('util', function () {
         });
     });
 
-    describe('mcSampler', function () {
+    describe('mcSampler()', function () {
         const scoring = pointsFromGame('PREMIER'),
             sampler = mcSampler(scoring);
 
@@ -349,27 +353,56 @@ describe('util', function () {
             }
         ];
 
-        const someTeamNames = ['Manchester City', 'Manchester United', 'Liverpool',
-            'Chelsea', 'Crystal Palace', 'Newcastle United'];
+        const threeGamesWithCertainWin = [
+            {
+                team1: 'Manchester City',
+                team2: 'Manchester United',
+                prob1: 1,
+                prob2: 0,
+                probtie: 0
+            },
+            {
+                team1: 'Manchester City',
+                team2: 'Newcastle United',
+                prob1: 1,
+                prob2: 0,
+                probtie: 0
+            },
+            {
+                team1: 'Manchester United',
+                team2: 'Newcastle United',
+                prob1: 1,
+                prob2: 0,
+                probtie: 0
+            },
+        ];
 
-        it('should be equivalent to mcSample when run with N = 1', function () {
-            const samples = sampler(someGames, 1);
-            expect(samples).to.eventually.be.an.instanceOf(Array).with.lengthOf(1);
-
-
-            expect(samples).to.eventually.all.satisfy(sample => {
-                return someTeamNames.every(teamA => sample.some(({team}) => team === teamA));
+        it('should identify all outcomes as equal if there is only one outcome', function (done) {
+            const samples = sampler(threeGamesWithCertainWin, 100);
+            samples.then(s => {
+                // console.log(util.inspect(s, {showHidden: false, depth: null}));
+                expect(s).to.be.an.instanceOf(Array).with.lengthOf(1);
+                expect(s[0].frequency).to.equal(100);
+                done();
             });
         });
 
         const testN = 10000;
-        it(`should preserve team names when run with N = ${testN}`, function () {
+        it(`should generate between 1 and ${testN} cases when N = ${testN}`, function (done) {
             const samples = sampler(someGames, testN);
-            expect(samples).to.eventually.be.an.instanceOf(Array).with.lengthOf(testN);
+            samples.then(s => {
+                // console.log(util.inspect(s, {showHidden: false, depth: null}));
+                expect(s).to.be.an.instanceOf(Array).with.lengthOf.within(1, testN);
+                done();
+            });
+        });
 
-
-            expect(samples).to.eventually.all.satisfy(sample => {
-                return someTeamNames.every(teamA => sample.some(({team}) => team === teamA));
+        it(`should generate cases whose frequencies add up to ${testN} when N = ${testN}`, function (done) {
+            const samples = sampler(someGames, testN);
+            samples.then(s => {
+                const sumFrequencies = s.reduce((acc, elem) => acc + elem.frequency, 0);
+                expect(sumFrequencies).to.equal(testN);
+                done();
             });
         });
     });

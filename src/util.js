@@ -248,8 +248,8 @@ module.exports.mcSample = mcSample;
 
 /**
  * Creates a Monte Carlo sampler for a specific scoring function: a function that takes a certain number of Monte Carlo
- * samples from an array of games, as above, and returns an array of the samples. The sampler takes the following
- * parameters:
+ * samples from an array of games, as above, and returns an array of the sample team standings, with frequencies for
+ * each distinct sample. The sampler takes the following parameters:
  *  - [games]: the array of games.
  *  - [N]: the number of samples to take.
  *
@@ -257,10 +257,27 @@ module.exports.mcSample = mcSample;
  * @returns {Function} The sampler function.
  */
 module.exports.mcSampler = pts => Promise.method((games, N) => {
-    let samples = [];
+    const frequencies = [];
+
     for (let i = 0; i < N; i++) {
-        samples.push(mcSample(games, pts));
+        // use the fact that all team names must be different:
+        const sample = mcSample(games, pts).sort(({team: teamA}, {team: teamB}) => teamA < teamB),
+            frequencyObj = frequencies.find(({standings}) => {
+                return standings.every(({team: teamA, goalDiff: goalDiffA, points: pointsA}, i) => {
+                    const {team: teamB, goalDiff: goalDiffB, points: pointsB} = sample[i];
+                    return teamA === teamB && goalDiffA === goalDiffB && pointsA === pointsB;
+                });
+            });
+
+        if (typeof frequencyObj === 'undefined') {
+            frequencies.push({
+                standings: sample,
+                frequency: 1
+            });
+        } else {
+            frequencyObj.frequency++;
+        }
     }
 
-    return samples;
+    return frequencies;
 });
