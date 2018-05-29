@@ -1,6 +1,6 @@
 // @flow
 
-type Game = {
+export type Game = {
     team1: string,
     team2: string,
     prob1: number,
@@ -8,17 +8,22 @@ type Game = {
     probtie: number
 };
 
-type Standing = {
+export type Standing = {
     team: string,
     goalDiff: number,
     points: number
 };
 
-type Standings = Standing[];
+export type Standings = Standing[];
 
-type GameResult = 1 | 0 | -1;
+export type GameResult = 1 | 0 | -1;
 
-type PointsFunction = (GameResult) => number[];
+export type PointsFunction = (GameResult) => number[];
+
+export type StandingsFrequency = {
+    standings: Standings,
+    frequency: number
+};
 
 const constants = require('./constants'),
     LEAGUES = constants.LEAGUES;
@@ -38,7 +43,7 @@ moment().format();
  * @param league
  * @returns {number}
  */
-const leagueToID = (league: string): number => {
+export const leagueToID = (league: string): number => {
     switch (league) {
         case LEAGUES.PREMIER:
             return 2411;
@@ -49,8 +54,6 @@ const leagueToID = (league: string): number => {
     }
 };
 
-module.exports.leagueToID = leagueToID;
-
 /**
  * Returns a function that maps wins, losses and ties to points for teams in league [league]. A win is represented by
  * [1], a tie by [0], and a loss by [-1].
@@ -58,7 +61,7 @@ module.exports.leagueToID = leagueToID;
  * @param league
  * @returns {function(*)}
  */
-module.exports.pointsFromGame = (league: string): (GameResult => number[]) => {
+export const pointsFromGame = (league: string): (GameResult => number[]) => {
     // TODO: make this depend on the league
     const win = 3,
         tie = 1,
@@ -125,7 +128,7 @@ const leagueToStandingsURL = (league: string): string => {
  * @param league
  * @returns {Promise}
  */
-module.exports.getLeagueStandings = (league: string): Promise<Standings> => {
+export const getLeagueStandings = (league: string): Promise<Standings> => {
     const url = leagueToStandingsURL(league);
     return axios.get(url)
         .then(response => {
@@ -156,7 +159,7 @@ module.exports.getLeagueStandings = (league: string): Promise<Standings> => {
  * @param daysAhead
  * @returns {Promise}
  */
-module.exports.getLeagueGames = Promise.method(function (league: string, daysAhead: number = 7): Promise<Game[]> {
+export const getLeagueGames = Promise.method(function (league: string, daysAhead: number = 7): Promise<Game[]> {
     // to round up to the nearest day, we can add 1 day and then round down:
     const maxDate = moment().add(daysAhead + 1, 'days').startOf('day');
     const leagueID = leagueToID(league);
@@ -202,7 +205,7 @@ const getStandingOfTeam = (standings: Standings, teamA: string): number => {
  * @param standingsB
  * @returns {Array}
  */
-const addStandings = (standingsA: Standings, standingsB: Standings): Standings => {
+export const addStandings = (standingsA: Standings, standingsB: Standings): Standings => {
     const totalStandings: Standings = JSON.parse(JSON.stringify(standingsA)); // deep copy
 
     // can't spell "functional" without "fun" :)
@@ -223,8 +226,6 @@ const addStandings = (standingsA: Standings, standingsB: Standings): Standings =
     }, totalStandings);
 };
 
-module.exports.addStandings = addStandings;
-
 /**
  * Generates a single Monte Carlo sample from the games array [games] by the following method:
  *  - Compute a single outcome sample for the first game, resulting in a win, loss, or tie.
@@ -239,7 +240,7 @@ module.exports.addStandings = addStandings;
  * values. This function should be generated from a league using [pointsFromGame].
  * @returns {Array} The standings from playing each game.
  */
-const mcSample = (games: Game[], pts: PointsFunction): Standings => {
+export const mcSample = (games: Game[], pts: PointsFunction): Standings => {
     // MapReduce :D
     const gameResults = games.map(({team1, team2, prob1, prob2, probtie}) => {
         // TODO: implement goal estimation for goal difference
@@ -268,8 +269,6 @@ const mcSample = (games: Game[], pts: PointsFunction): Standings => {
     return gameResults.reduce(addStandings, []);
 };
 
-module.exports.mcSample = mcSample;
-
 /**
  * Creates a Monte Carlo sampler for a specific scoring function: a function that takes a certain number of Monte Carlo
  * samples from an array of games, as above, and returns an array of the sample team standings, with frequencies for
@@ -280,8 +279,9 @@ module.exports.mcSample = mcSample;
  * @param {Function} pts The scoring function; the same as the parameter of the same name in [mcSample].
  * @returns {Function} The sampler function.
  */
-// TODO: define frequency type
-module.exports.mcSampler = (pts: PointsFunction): ((games: Game[], N: number) => Promise) => Promise.method((games: Game[], N: number) => {
+export const mcSampler = (pts: PointsFunction):
+    ((games: Game[], N: number) => Promise<StandingsFrequency[]>) => Promise.method(
+        (games: Game[], N: number): StandingsFrequency[] => {
     const frequencies = [];
 
     for (let i = 0; i < N; i++) {
