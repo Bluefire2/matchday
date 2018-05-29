@@ -46,4 +46,4 @@ Therefore, the final output is an array of objects that look like this:
 ```
 
 ### Known issues
-Note that this project is very new and not at all stable. There may be a few bugs lying around, too.
+Note that this project is very new and not currently usable.

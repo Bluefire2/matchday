@@ -2,7 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="27cb4be7-49dc-4710-833d-5f0e482889cd" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/index.js" afterPath="$PROJECT_DIR$/src/index.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/README.md" afterPath="$PROJECT_DIR$/README.md" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/package.json" afterPath="$PROJECT_DIR$/package.json" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -16,7 +18,7 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="index.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="index.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/index.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="300">
@@ -28,16 +30,16 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="README.md" pinned="false" current-in-tab="false">
+      <file leaf-file-name="README.md" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/README.md">
           <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
             <state split_layout="SPLIT">
-              <first_editor relative-caret-position="464">
-                <caret line="48" column="100" lean-forward="false" selection-start-line="48" selection-start-column="100" selection-end-line="48" selection-end-column="100" />
+              <first_editor relative-caret-position="443">
+                <caret line="48" column="60" lean-forward="false" selection-start-line="48" selection-start-column="60" selection-end-line="48" selection-end-column="60" />
                 <folding>
-                  <marker date="1527629230767" expanded="true" signature="810:829" ph="{...}" />
-                  <marker date="1527629230767" expanded="true" signature="1234:1395" ph="{...}" />
-                  <marker date="1527629230767" expanded="true" signature="1488:1592" ph="{...}" />
+                  <marker date="1527630483930" expanded="true" signature="810:829" ph="{...}" />
+                  <marker date="1527630483930" expanded="true" signature="1234:1395" ph="{...}" />
+                  <marker date="1527630483930" expanded="true" signature="1488:1592" ph="{...}" />
                 </folding>
               </first_editor>
               <second_editor />
@@ -58,7 +60,7 @@
       <file leaf-file-name="test.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/test/test.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="336">
+            <state relative-caret-position="-7911">
               <caret line="16" column="10" lean-forward="false" selection-start-line="16" selection-start-column="10" selection-end-line="16" selection-end-column="10" />
               <folding />
             </state>
@@ -68,10 +70,10 @@
       <file leaf-file-name="package.json" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/package.json">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-105">
-              <caret line="7" column="13" lean-forward="false" selection-start-line="7" selection-start-column="13" selection-end-line="7" selection-end-column="13" />
+            <state relative-caret-position="42">
+              <caret line="2" column="17" lean-forward="false" selection-start-line="2" selection-start-column="17" selection-end-line="2" selection-end-column="17" />
               <folding>
-                <marker date="1527613800638" expanded="true" signature="508:644" ph="{&quot;chai&quot;: &quot;^4.1.2&quot;...}" />
+                <marker date="1527629417842" expanded="true" signature="508:644" ph="{&quot;chai&quot;: &quot;^4.1.2&quot;...}" />
               </folding>
             </state>
           </provider>
@@ -146,10 +148,10 @@
         <option value="$PROJECT_DIR$/src/constants.js" />
         <option value="$PROJECT_DIR$/test/test.js" />
         <option value="$PROJECT_DIR$/.babelrc" />
-        <option value="$PROJECT_DIR$/package.json" />
         <option value="$PROJECT_DIR$/src/util.js" />
-        <option value="$PROJECT_DIR$/README.md" />
         <option value="$PROJECT_DIR$/src/index.js" />
+        <option value="$PROJECT_DIR$/package.json" />
+        <option value="$PROJECT_DIR$/README.md" />
       </list>
     </option>
   </component>
@@ -363,7 +365,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1527357303840</updated>
-      <workItem from="1527357305074" duration="61545000" />
+      <workItem from="1527357305074" duration="62385000" />
     </task>
     <task id="LOCAL-00001" summary="Calculate standings and games in matchday main function">
       <created>1527526682750</created>
@@ -443,7 +445,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="61545000" />
+    <option name="totallyTimeSpent" value="62385000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -588,14 +590,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/test/test.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="336">
-          <caret line="16" column="10" lean-forward="false" selection-start-line="16" selection-start-column="10" selection-end-line="16" selection-end-column="10" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/lib/index.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -612,31 +606,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/package.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-105">
-          <caret line="7" column="13" lean-forward="false" selection-start-line="7" selection-start-column="13" selection-end-line="7" selection-end-column="13" />
-          <folding>
-            <marker date="1527613800638" expanded="true" signature="508:644" ph="{&quot;chai&quot;: &quot;^4.1.2&quot;...}" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/README.md">
-      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-        <state split_layout="SPLIT">
-          <first_editor relative-caret-position="464">
-            <caret line="48" column="100" lean-forward="false" selection-start-line="48" selection-start-column="100" selection-end-line="48" selection-end-column="100" />
-            <folding>
-              <marker date="1527629230767" expanded="true" signature="810:829" ph="{...}" />
-              <marker date="1527629230767" expanded="true" signature="1234:1395" ph="{...}" />
-              <marker date="1527629230767" expanded="true" signature="1488:1592" ph="{...}" />
-            </folding>
-          </first_editor>
-          <second_editor />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/index.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="300">
@@ -644,6 +613,39 @@
           <folding>
             <element signature="e#101#200#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/package.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="42">
+          <caret line="2" column="17" lean-forward="false" selection-start-line="2" selection-start-column="17" selection-end-line="2" selection-end-column="17" />
+          <folding>
+            <marker date="1527629417842" expanded="true" signature="508:644" ph="{&quot;chai&quot;: &quot;^4.1.2&quot;...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test/test.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-7911">
+          <caret line="16" column="10" lean-forward="false" selection-start-line="16" selection-start-column="10" selection-end-line="16" selection-end-column="10" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/README.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor relative-caret-position="443">
+            <caret line="48" column="60" lean-forward="false" selection-start-line="48" selection-start-column="60" selection-end-line="48" selection-end-column="60" />
+            <folding>
+              <marker date="1527630483930" expanded="true" signature="810:829" ph="{...}" />
+              <marker date="1527630483930" expanded="true" signature="1234:1395" ph="{...}" />
+              <marker date="1527630483930" expanded="true" signature="1488:1592" ph="{...}" />
+            </folding>
+          </first_editor>
+          <second_editor />
         </state>
       </provider>
     </entry>
