@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="27cb4be7-49dc-4710-833d-5f0e482889cd" name="Default" comment="Change the specification of addStandings.&#10;&#10;Previously, addStandings required that the two arrays both have exactly the same teams; this is no longer the case. If a team exists in one standing array but not the other, the values for that team will simply be copied into the resulting array, similar to set union.">
+    <list default="true" id="27cb4be7-49dc-4710-833d-5f0e482889cd" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/util.js" afterPath="$PROJECT_DIR$/src/util.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/index.js" afterPath="$PROJECT_DIR$/src/index.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/test.js" afterPath="$PROJECT_DIR$/test/test.js" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
@@ -18,21 +18,21 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="index.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="index.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/index.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="105">
-              <caret line="5" column="41" lean-forward="false" selection-start-line="5" selection-start-column="41" selection-end-line="5" selection-end-column="41" />
+            <state relative-caret-position="426">
+              <caret line="37" column="2" lean-forward="true" selection-start-line="37" selection-start-column="2" selection-end-line="37" selection-end-column="2" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="util.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="util.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/util.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="258">
-              <caret line="258" column="42" lean-forward="false" selection-start-line="258" selection-start-column="42" selection-end-line="258" selection-end-column="42" />
+            <state relative-caret-position="84">
+              <caret line="133" column="40" lean-forward="false" selection-start-line="133" selection-start-column="40" selection-end-line="133" selection-end-column="40" />
               <folding />
             </state>
           </provider>
@@ -41,13 +41,11 @@
       <file leaf-file-name="test.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/test/test.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="405">
-              <caret line="370" column="26" lean-forward="false" selection-start-line="370" selection-start-column="26" selection-end-line="370" selection-end-column="26" />
+            <state relative-caret-position="363">
+              <caret line="409" column="19" lean-forward="true" selection-start-line="409" selection-start-column="19" selection-end-line="409" selection-end-column="19" />
               <folding>
-                <element signature="e#718#1165#0" expanded="false" />
-                <element signature="e#1218#2423#0" expanded="false" />
-                <element signature="e#2472#3405#0" expanded="false" />
-                <element signature="e#3452#6736#0" expanded="false" />
+                <element signature="e#785#1232#0" expanded="false" />
+                <marker date="1527565837597" expanded="false" signature="3275:6559" ph="{...}" />
               </folding>
             </state>
           </provider>
@@ -69,7 +67,7 @@
         <entry file="file://$PROJECT_DIR$/src/constants.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="84">
-              <caret line="4" column="35" lean-forward="false" selection-start-line="4" selection-start-column="35" selection-end-line="4" selection-end-column="35" />
+              <caret line="4" column="15" lean-forward="false" selection-start-line="4" selection-start-column="4" selection-end-line="4" selection-end-column="15" />
               <folding />
             </state>
           </provider>
@@ -105,6 +103,11 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="getLeagueGames-fix" />
+      </map>
+    </option>
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
@@ -114,9 +117,9 @@
         <option value="$PROJECT_DIR$/.travis.yml" />
         <option value="$PROJECT_DIR$/src/constants.js" />
         <option value="$PROJECT_DIR$/package.json" />
-        <option value="$PROJECT_DIR$/src/index.js" />
         <option value="$PROJECT_DIR$/src/util.js" />
         <option value="$PROJECT_DIR$/test/test.js" />
+        <option value="$PROJECT_DIR$/src/index.js" />
       </list>
     </option>
   </component>
@@ -215,8 +218,8 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Mocha.util.mcSample().should preserve team names when run on a list of games">
-    <configuration name="util.addStandings().should add uneven arrays of standings" type="mocha-javascript-test-runner" factoryName="Mocha" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="Mocha.matchday">
+    <configuration name="matchday" type="mocha-javascript-test-runner" factoryName="Mocha" temporary="true" nameIsGenerated="true">
       <node-interpreter>project</node-interpreter>
       <node-options />
       <working-directory>$PROJECT_DIR$</working-directory>
@@ -224,15 +227,13 @@
       <envs />
       <ui>bdd</ui>
       <extra-mocha-options />
-      <test-kind>TEST</test-kind>
+      <test-kind>SUITE</test-kind>
       <test-file>$PROJECT_DIR$/test/test.js</test-file>
       <test-names>
-        <name value="util" />
-        <name value="addStandings()" />
-        <name value="should add uneven arrays of standings" />
+        <name value="matchday" />
       </test-names>
     </configuration>
-    <configuration name="util.addStandings().should correctly add arrays of a single standing" type="mocha-javascript-test-runner" factoryName="Mocha" temporary="true" nameIsGenerated="true">
+    <configuration name="util.mcSampler().should be equivalent to mcSample when run with N = 1" type="mocha-javascript-test-runner" factoryName="Mocha" temporary="true" nameIsGenerated="true">
       <node-interpreter>project</node-interpreter>
       <node-options />
       <working-directory>$PROJECT_DIR$</working-directory>
@@ -244,11 +245,11 @@
       <test-file>$PROJECT_DIR$/test/test.js</test-file>
       <test-names>
         <name value="util" />
-        <name value="addStandings()" />
-        <name value="should correctly add arrays of a single standing" />
+        <name value="mcSampler()" />
+        <name value="should be equivalent to mcSample when run with N = 1" />
       </test-names>
     </configuration>
-    <configuration name="util.getLeagueStandings.should work :)" type="mocha-javascript-test-runner" factoryName="Mocha" temporary="true" nameIsGenerated="true">
+    <configuration name="util.mcSampler().should generate between 1 and ${N} cases when N = ${testN}" type="mocha-javascript-test-runner" factoryName="Mocha" temporary="true" nameIsGenerated="true">
       <node-interpreter>project</node-interpreter>
       <node-options />
       <working-directory>$PROJECT_DIR$</working-directory>
@@ -260,11 +261,11 @@
       <test-file>$PROJECT_DIR$/test/test.js</test-file>
       <test-names>
         <name value="util" />
-        <name value="getLeagueStandings" />
-        <name value="should work :)" />
+        <name value="mcSampler()" />
+        <name value="should generate between 1 and ${N} cases when N = ${testN}" />
       </test-names>
     </configuration>
-    <configuration name="util.mcSample().should give a standing with team2 on top when team2 is guaranteed to win the only game" type="mocha-javascript-test-runner" factoryName="Mocha" temporary="true" nameIsGenerated="true">
+    <configuration name="util.mcSampler().should generate between 1 and ${testN} cases when N = ${testN}" type="mocha-javascript-test-runner" factoryName="Mocha" temporary="true" nameIsGenerated="true">
       <node-interpreter>project</node-interpreter>
       <node-options />
       <working-directory>$PROJECT_DIR$</working-directory>
@@ -276,11 +277,11 @@
       <test-file>$PROJECT_DIR$/test/test.js</test-file>
       <test-names>
         <name value="util" />
-        <name value="mcSample()" />
-        <name value="should give a standing with team2 on top when team2 is guaranteed to win the only game" />
+        <name value="mcSampler()" />
+        <name value="should generate between 1 and ${testN} cases when N = ${testN}" />
       </test-names>
     </configuration>
-    <configuration name="util.mcSample().should preserve team names when run on a list of games" type="mocha-javascript-test-runner" factoryName="Mocha" temporary="true" nameIsGenerated="true">
+    <configuration name="util.mcSampler().should identify all outcomes as equal if there is only one outcome" type="mocha-javascript-test-runner" factoryName="Mocha" temporary="true" nameIsGenerated="true">
       <node-interpreter>project</node-interpreter>
       <node-options />
       <working-directory>$PROJECT_DIR$</working-directory>
@@ -292,24 +293,24 @@
       <test-file>$PROJECT_DIR$/test/test.js</test-file>
       <test-names>
         <name value="util" />
-        <name value="mcSample()" />
-        <name value="should preserve team names when run on a list of games" />
+        <name value="mcSampler()" />
+        <name value="should identify all outcomes as equal if there is only one outcome" />
       </test-names>
     </configuration>
     <list size="5">
-      <item index="0" class="java.lang.String" itemvalue="Mocha.util.getLeagueStandings.should work :)" />
-      <item index="1" class="java.lang.String" itemvalue="Mocha.util.addStandings().should correctly add arrays of a single standing" />
-      <item index="2" class="java.lang.String" itemvalue="Mocha.util.mcSample().should give a standing with team2 on top when team2 is guaranteed to win the only game" />
-      <item index="3" class="java.lang.String" itemvalue="Mocha.util.mcSample().should preserve team names when run on a list of games" />
-      <item index="4" class="java.lang.String" itemvalue="Mocha.util.addStandings().should add uneven arrays of standings" />
+      <item index="0" class="java.lang.String" itemvalue="Mocha.util.mcSampler().should be equivalent to mcSample when run with N = 1" />
+      <item index="1" class="java.lang.String" itemvalue="Mocha.util.mcSampler().should identify all outcomes as equal if there is only one outcome" />
+      <item index="2" class="java.lang.String" itemvalue="Mocha.util.mcSampler().should generate between 1 and ${N} cases when N = ${testN}" />
+      <item index="3" class="java.lang.String" itemvalue="Mocha.util.mcSampler().should generate between 1 and ${testN} cases when N = ${testN}" />
+      <item index="4" class="java.lang.String" itemvalue="Mocha.matchday" />
     </list>
     <recent_temporary>
       <list size="5">
-        <item index="0" class="java.lang.String" itemvalue="Mocha.util.mcSample().should preserve team names when run on a list of games" />
-        <item index="1" class="java.lang.String" itemvalue="Mocha.util.addStandings().should add uneven arrays of standings" />
-        <item index="2" class="java.lang.String" itemvalue="Mocha.util.mcSample().should give a standing with team2 on top when team2 is guaranteed to win the only game" />
-        <item index="3" class="java.lang.String" itemvalue="Mocha.util.addStandings().should correctly add arrays of a single standing" />
-        <item index="4" class="java.lang.String" itemvalue="Mocha.util.getLeagueStandings.should work :)" />
+        <item index="0" class="java.lang.String" itemvalue="Mocha.matchday" />
+        <item index="1" class="java.lang.String" itemvalue="Mocha.util.mcSampler().should generate between 1 and ${testN} cases when N = ${testN}" />
+        <item index="2" class="java.lang.String" itemvalue="Mocha.util.mcSampler().should generate between 1 and ${N} cases when N = ${testN}" />
+        <item index="3" class="java.lang.String" itemvalue="Mocha.util.mcSampler().should identify all outcomes as equal if there is only one outcome" />
+        <item index="4" class="java.lang.String" itemvalue="Mocha.util.mcSampler().should be equivalent to mcSample when run with N = 1" />
       </list>
     </recent_temporary>
   </component>
@@ -326,7 +327,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1527357303840</updated>
-      <workItem from="1527357305074" duration="43879000" />
+      <workItem from="1527357305074" duration="52155000" />
     </task>
     <task id="LOCAL-00001" summary="Calculate standings and games in matchday main function">
       <created>1527526682750</created>
@@ -342,43 +343,64 @@
       <option name="project" value="LOCAL" />
       <updated>1527537970206</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Implement mcSampler, with tests.">
+      <created>1527546884751</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1527546884751</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Change getLeagueGames to take a league value instead of a league key">
+      <created>1527564996700</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1527564996700</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Dang typos">
+      <created>1527565498041</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1527565498041</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="util_addStandings()_should_add_uneven_arrays_of_standings - 2018.05.28 at 17h 57m 33s.xml">
-      <configuration name="util.addStandings().should add uneven arrays of standings" configurationId="mocha-javascript-test-runner" />
+    <history-entry file="matchday - 2018.05.28 at 23h 46m 20s.xml">
+      <configuration name="matchday" configurationId="mocha-javascript-test-runner" />
     </history-entry>
-    <history-entry file="util_addStandings()_should_add_uneven_arrays_of_standings - 2018.05.28 at 17h 58m 11s.xml">
-      <configuration name="util.addStandings().should add uneven arrays of standings" configurationId="mocha-javascript-test-runner" />
+    <history-entry file="matchday - 2018.05.28 at 23h 46m 35s.xml">
+      <configuration name="matchday" configurationId="mocha-javascript-test-runner" />
     </history-entry>
-    <history-entry file="util_addStandings()_should_add_uneven_arrays_of_standings - 2018.05.28 at 18h 00m 01s.xml">
-      <configuration name="util.addStandings().should add uneven arrays of standings" configurationId="mocha-javascript-test-runner" />
+    <history-entry file="matchday - 2018.05.28 at 23h 46m 52s.xml">
+      <configuration name="matchday" configurationId="mocha-javascript-test-runner" />
     </history-entry>
-    <history-entry file="util_mcSample()_should_preserve_team_names_when_run_on_a_list_of_games - 2018.05.28 at 17h 48m 41s.xml">
-      <configuration name="util.mcSample().should preserve team names when run on a list of games" configurationId="mocha-javascript-test-runner" />
+    <history-entry file="matchday - 2018.05.28 at 23h 47m 19s.xml">
+      <configuration name="matchday" configurationId="mocha-javascript-test-runner" />
     </history-entry>
-    <history-entry file="util_mcSample()_should_preserve_team_names_when_run_on_a_list_of_games - 2018.05.28 at 17h 49m 04s.xml">
-      <configuration name="util.mcSample().should preserve team names when run on a list of games" configurationId="mocha-javascript-test-runner" />
+    <history-entry file="matchday - 2018.05.28 at 23h 47m 58s.xml">
+      <configuration name="matchday" configurationId="mocha-javascript-test-runner" />
     </history-entry>
-    <history-entry file="util_mcSample()_should_preserve_team_names_when_run_on_a_list_of_games - 2018.05.28 at 17h 49m 51s.xml">
-      <configuration name="util.mcSample().should preserve team names when run on a list of games" configurationId="mocha-javascript-test-runner" />
+    <history-entry file="matchday - 2018.05.28 at 23h 48m 42s.xml">
+      <configuration name="matchday" configurationId="mocha-javascript-test-runner" />
     </history-entry>
-    <history-entry file="util_mcSample()_should_preserve_team_names_when_run_on_a_list_of_games - 2018.05.28 at 17h 51m 37s.xml">
-      <configuration name="util.mcSample().should preserve team names when run on a list of games" configurationId="mocha-javascript-test-runner" />
+    <history-entry file="matchday - 2018.05.28 at 23h 49m 07s.xml">
+      <configuration name="matchday" configurationId="mocha-javascript-test-runner" />
     </history-entry>
-    <history-entry file="util_mcSample()_should_preserve_team_names_when_run_on_a_list_of_games - 2018.05.28 at 17h 52m 04s.xml">
-      <configuration name="util.mcSample().should preserve team names when run on a list of games" configurationId="mocha-javascript-test-runner" />
+    <history-entry file="matchday - 2018.05.28 at 23h 49m 40s.xml">
+      <configuration name="matchday" configurationId="mocha-javascript-test-runner" />
     </history-entry>
-    <history-entry file="util_mcSample()_should_preserve_team_names_when_run_on_a_list_of_games - 2018.05.28 at 17h 53m 29s.xml">
-      <configuration name="util.mcSample().should preserve team names when run on a list of games" configurationId="mocha-javascript-test-runner" />
+    <history-entry file="matchday - 2018.05.28 at 23h 50m 42s.xml">
+      <configuration name="matchday" configurationId="mocha-javascript-test-runner" />
     </history-entry>
-    <history-entry file="util_mcSample()_should_preserve_team_names_when_run_on_a_list_of_games - 2018.05.28 at 18h 18m 49s.xml">
-      <configuration name="util.mcSample().should preserve team names when run on a list of games" configurationId="mocha-javascript-test-runner" />
+    <history-entry file="matchday - 2018.05.28 at 23h 50m 58s.xml">
+      <configuration name="matchday" configurationId="mocha-javascript-test-runner" />
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="43879000" />
+    <option name="totallyTimeSpent" value="52155000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -398,10 +420,10 @@
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32915717" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32915717" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32915717" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32915717" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32915717" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32915717" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -421,10 +443,15 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Calculate standings and games in matchday main function" />
     <MESSAGE value="Change the specification of addStandings.&#10;&#10;Previously, addStandings required that the two arrays both have exactly the same teams; this is no longer the case. If a team exists in one standing array but not the other, the values for that team will simply be copied into the resulting array, similar to set union." />
-    <option name="LAST_COMMIT_MESSAGE" value="Change the specification of addStandings.&#10;&#10;Previously, addStandings required that the two arrays both have exactly the same teams; this is no longer the case. If a team exists in one standing array but not the other, the values for that team will simply be copied into the resulting array, similar to set union." />
+    <MESSAGE value="Implement mcSampler, with tests." />
+    <MESSAGE value="Change getLeagueGames to take a league value instead of a league key" />
+    <MESSAGE value="Dang typos" />
+    <option name="LAST_COMMIT_MESSAGE" value="Dang typos" />
   </component>
   <component name="XDebuggerManager">
-    <breakpoint-manager />
+    <breakpoint-manager>
+      <option name="time" value="1" />
+    </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
@@ -460,14 +487,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/constants.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="84">
-          <caret line="4" column="35" lean-forward="false" selection-start-line="4" selection-start-column="35" selection-end-line="4" selection-end-column="35" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/package.json">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="315">
@@ -478,31 +497,37 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/index.js">
+    <entry file="file://$PROJECT_DIR$/src/constants.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="105">
-          <caret line="5" column="41" lean-forward="false" selection-start-line="5" selection-start-column="41" selection-end-line="5" selection-end-column="41" />
+        <state relative-caret-position="84">
+          <caret line="4" column="15" lean-forward="false" selection-start-line="4" selection-start-column="4" selection-end-line="4" selection-end-column="15" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/util.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="84">
+          <caret line="133" column="40" lean-forward="false" selection-start-line="133" selection-start-column="40" selection-end-line="133" selection-end-column="40" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/test/test.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="405">
-          <caret line="370" column="26" lean-forward="false" selection-start-line="370" selection-start-column="26" selection-end-line="370" selection-end-column="26" />
+        <state relative-caret-position="363">
+          <caret line="409" column="19" lean-forward="true" selection-start-line="409" selection-start-column="19" selection-end-line="409" selection-end-column="19" />
           <folding>
-            <element signature="e#718#1165#0" expanded="false" />
-            <element signature="e#1218#2423#0" expanded="false" />
-            <element signature="e#2472#3405#0" expanded="false" />
-            <element signature="e#3452#6736#0" expanded="false" />
+            <element signature="e#785#1232#0" expanded="false" />
+            <marker date="1527565837597" expanded="false" signature="3275:6559" ph="{...}" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/util.js">
+    <entry file="file://$PROJECT_DIR$/src/index.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="258">
-          <caret line="258" column="42" lean-forward="false" selection-start-line="258" selection-start-column="42" selection-end-line="258" selection-end-column="42" />
+        <state relative-caret-position="426">
+          <caret line="37" column="2" lean-forward="true" selection-start-line="37" selection-start-column="2" selection-end-line="37" selection-end-column="2" />
           <folding />
         </state>
       </provider>

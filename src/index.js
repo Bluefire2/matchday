@@ -3,7 +3,7 @@
 const constants = require('./constants'),
     LEAGUES = constants.LEAGUES;
 
-const {getLeagueStandings, getLeagueGames} = require('./util'),
+const {getLeagueStandings, getLeagueGames, mcSampler, pointsFromGame, addStandings} = require('./util'),
     Promise = require('bluebird');
 
 /**
@@ -12,17 +12,27 @@ const {getLeagueStandings, getLeagueGames} = require('./util'),
  *
  * @param {String} league
  * @param {Number} [daysAhead=7]
- * @param {Number} [iterations=10] The number of iterations to run the Monte Carlo sampler.
+ * @param {Number} [N=10000] The number of iterations to run the Monte Carlo sampler.
  * @returns {Promise}
  */
-module.exports = (league, daysAhead = 7, iterations = 10) => { // 10 for now
-    const standingsPromise = getLeagueStandings(league),
-        gamesPromise = getLeagueGames(league, daysAhead);
+module.exports = (league, daysAhead = 7, N = 10000) => { // 10000 for now
+    const leagueCode = LEAGUES[league],
+        scoring = pointsFromGame(leagueCode),
+        sampler = mcSampler(scoring);
 
-    return Promise.all([standingsPromise, gamesPromise]).then(values => {
-        const standings = values[0],
-            games = values[1];
+    const pStandings = getLeagueStandings(leagueCode),
+        pGames = getLeagueGames(leagueCode),
+        pSamples = pGames.then(games => {
+            return sampler(games, N);
+        });
 
-
+    return Promise.join(pStandings, pSamples, (baseStandings, samples) => {
+        // for each sample, add the base standings
+        return samples.map(({standings, frequency}) => {
+            return {
+                standings: addStandings(baseStandings, standings),
+                frequency
+            }
+        });
     });
 };
