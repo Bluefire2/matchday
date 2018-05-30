@@ -23,7 +23,8 @@
     "coveralls": "^3.0.1",
     "flow-bin": "^0.73.0",
     "istanbul": "^0.4.5",
-    "mocha": "^5.2.0"
+    "mocha": "^5.2.0",
+    "wu": "^2.1.0"
   },
   "dependencies": {
     "axios": "^0.18.0",
