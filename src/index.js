@@ -17,14 +17,14 @@ import type {Game, Standings, StandingsFrequency} from "./util";
  * @param {Number} [daysAhead=7]
  * @param {Number} [N=1000000] The number of iterations to run the Monte Carlo sampler.
  * @param {Boolean} [verbose=false] Whether to display progress messages.
- * @param {Number} [CHUNK_SIZE=1000]
+ * @param {Number} [CHUNK_SIZE=10000]
  * @returns {Promise}
  */
 module.exports = (league: string,
                   daysAhead: number = 7,
                   N: number = 1000000,
                   verbose: boolean = false,
-                  CHUNK_SIZE: number = 1000): StandingsFrequency[] => { // 10000 for now
+                  CHUNK_SIZE: number = 10000): StandingsFrequency[] => {
     const leagueCode = LEAGUES[league],
         scoring = pointsFromGame(leagueCode),
         sampler = mcSampler(scoring);
