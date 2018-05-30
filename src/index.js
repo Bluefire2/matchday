@@ -40,7 +40,7 @@ module.exports = (league: string,
         if (verbose) console.log('Sampling...');
         for (let i = 0; i < chunks; i++) {
             let samplerCallback = verbose ? () => {
-                console.log(i * CHUNK_SIZE + ' samples done.')
+                console.log((i + 1) * CHUNK_SIZE + ' samples done.')
             } : () => {
             };
             promises.push(Promise.resolve(sampler(games, CHUNK_SIZE, samplerCallback)));
