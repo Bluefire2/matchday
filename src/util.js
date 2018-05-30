@@ -20,11 +20,6 @@ export type GameResult = 1 | 0 | -1;
 
 export type PointsFunction = (GameResult) => number[];
 
-export type StandingsFrequency = {
-    standings: Standings,
-    frequency: number
-};
-
 export type FrequencyMap = Map<string, number>;
 
 const constants = require('./constants'),
@@ -303,7 +298,7 @@ export const mcSample = (games: Game[], pts: PointsFunction): Standings => {
  * @param {Function} pts The scoring function; the same as the parameter of the same name in [mcSample].
  * @returns {Function} The sampler function.
  */
-export const mcSampler = (pts: PointsFunction): ((games: Game[], N: number) => Promise<Map<string, number>>) => Promise.method(
+export const mcSampler = (pts: PointsFunction): ((games: Game[], N: number, callback: ?Function) => Promise<Map<string, number>>) => Promise.method(
     (games: Game[], N: number, callback: Function = () => {
     }): FrequencyMap => {
         /*

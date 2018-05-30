@@ -7,7 +7,7 @@ const constants = require('./constants'),
 
 import {getLeagueStandings, getLeagueGames, mcSampler, pointsFromGame, addStandings, mergeFrequencyMaps} from './util';
 import Promise from 'bluebird';
-import type {Game, Standings, StandingsFrequency} from "./util";
+import type {FrequencyMap, Game} from "./util";
 
 /**
  * Calculate the distributions of potential rankings for each team in [league], from games in the next [daysAhead] days,
@@ -24,7 +24,7 @@ module.exports = (league: string,
                   daysAhead: number = 7,
                   N: number = 1000000,
                   verbose: boolean = false,
-                  CHUNK_SIZE: number = 10000): StandingsFrequency[] => {
+                  CHUNK_SIZE: number = 10000): FrequencyMap => {
     const leagueCode = LEAGUES[league],
         scoring = pointsFromGame(leagueCode),
         sampler = mcSampler(scoring);
