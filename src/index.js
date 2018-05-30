@@ -5,7 +5,7 @@
 const constants = require('./constants'),
     LEAGUES = constants.LEAGUES;
 
-import {getLeagueStandings, getLeagueGames, mcSampler, pointsFromGame, addStandings} from './util';
+import {getLeagueStandings, getLeagueGames, mcSampler, pointsFromGame, addStandings, mergeFrequencyMaps} from './util';
 import Promise from 'bluebird';
 import type {Game, Standings, StandingsFrequency} from "./util";
 
@@ -24,7 +24,7 @@ module.exports = (league: string, daysAhead: number = 7, N: number = 1000000, ve
         scoring = pointsFromGame(leagueCode),
         sampler = mcSampler(scoring);
 
-    const CHUNK_SIZE = 1000,
+    const CHUNK_SIZE = 1000, // TODO: make this adjustable by the user
         chunks = Math.floor(N / CHUNK_SIZE),
         remainder = N % CHUNK_SIZE;
 
@@ -40,16 +40,9 @@ module.exports = (league: string, daysAhead: number = 7, N: number = 1000000, ve
         promises.push(Promise.resolve(sampler(games, remainder)));
 
         return Promise.join(Promise.all(promises), pStandings, (data, baseStandings) => {
-            const mappedDataUnflattened = data.map(elem => {
-                return elem.map(({standings, frequency}) => {
-                    return {
-                        standings: addStandings(baseStandings, standings),
-                        frequency
-                    };
-                });
-            });
+            const flattenedData = data.reduce((acc, elem) => mergeFrequencyMaps(acc, elem), new Map());
 
-            return [].concat.apply([], mappedDataUnflattened);
+            return flattenedData; // TODO: add the base standings to the keys
         });
     });
 };
