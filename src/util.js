@@ -280,28 +280,27 @@ export const mcSample = (games: Game[], pts: PointsFunction): Standings => {
  * @returns {Function} The sampler function.
  */
 export const mcSampler = (pts: PointsFunction):
-    ((games: Game[], N: number) => Promise<StandingsFrequency[]>) => Promise.method(
-        (games: Game[], N: number): StandingsFrequency[] => {
-    const frequencies = [];
-
+    ((games: Game[], N: number) => Promise<Map<string, number>>) => Promise.method(
+        (games: Game[], N: number): Map<string, number> => {
+    /*
+     * Although not explicitly required by the ECMA spec, the native Map object is implemented in V8 using a hashmap.
+     * This gives us fast, O(1) lookups!
+     */
+    const frequencies = new Map();
     for (let i = 0; i < N; i++) {
+        // we need to sort in some way before serialising so that it can detect equal arrays
         // use the fact that all team names must be different:
+        // TODO: instead of sorting, assign the team rankings in a pre-specified order
         const sample = mcSample(games, pts).sort(({team: teamA}, {team: teamB}) => teamA < teamB ? 1 : -1),
-            frequencyObj = frequencies.find(({standings}) => {
-                return standings.every(({team: teamA, goalDiff: goalDiffA, points: pointsA}, i) => {
-                    const {team: teamB, goalDiff: goalDiffB, points: pointsB} = sample[i];
-                    return teamA === teamB && goalDiffA === goalDiffB && pointsA === pointsB;
-                });
-            });
+            serializedSample = JSON.stringify(sample),
+            value = frequencies.get(serializedSample);
 
-        if (typeof frequencyObj === 'undefined') {
-            frequencies.push({
-                standings: sample,
-                frequency: 1
-            });
-        } else {
-            frequencyObj.frequency++;
+        let f = 0;
+        if (typeof value !== 'undefined') {
+            // key already exists
+            f = value;
         }
+        frequencies.set(serializedSample, f + 1);
     }
 
     return frequencies;
