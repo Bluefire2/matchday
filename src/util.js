@@ -303,30 +303,30 @@ export const mcSample = (games: Game[], pts: PointsFunction): Standings => {
  * @param {Function} pts The scoring function; the same as the parameter of the same name in [mcSample].
  * @returns {Function} The sampler function.
  */
-export const mcSampler = (pts: PointsFunction):
-    ((games: Game[], N: number) => Promise<Map<string, number>>) => Promise.method(
-        (games: Game[], N: number, callback: Function = () => {}): FrequencyMap => {
-    /*
-     * Although not explicitly required by the ECMA spec, the native Map object is implemented in V8 using a hashmap.
-     * This gives us fast, O(1) lookups!
-     */
-    const frequencies = new Map();
-    for (let i = 0; i < N; i++) {
-        // we need to sort in some way before serialising so that it can detect equal arrays
-        // use the fact that all team names must be different:
-        // TODO: instead of sorting, assign the team rankings in a pre-specified order
-        const sample = mcSample(games, pts).sort(({team: teamA}, {team: teamB}) => teamA < teamB ? 1 : -1),
-            serializedSample = JSON.stringify(sample),
-            value = frequencies.get(serializedSample);
+export const mcSampler = (pts: PointsFunction): ((games: Game[], N: number) => Promise<Map<string, number>>) => Promise.method(
+    (games: Game[], N: number, callback: Function = () => {
+    }): FrequencyMap => {
+        /*
+         * Although not explicitly required by the ECMA spec, the native Map object is implemented in V8 using a hashmap.
+         * This gives us fast, O(1) lookups!
+         */
+        const frequencies = new Map();
+        for (let i = 0; i < N; i++) {
+            // we need to sort in some way before serialising so that it can detect equal arrays
+            // use the fact that all team names must be different:
+            // TODO: instead of sorting, assign the team rankings in a pre-specified order
+            const sample = mcSample(games, pts).sort(({team: teamA}, {team: teamB}) => teamA < teamB ? 1 : -1),
+                serializedSample = JSON.stringify(sample),
+                value = frequencies.get(serializedSample);
 
-        let f = 0;
-        if (typeof value !== 'undefined') {
-            // key already exists
-            f = value;
+            let f = 0;
+            if (typeof value !== 'undefined') {
+                // key already exists
+                f = value;
+            }
+            frequencies.set(serializedSample, f + 1);
         }
-        frequencies.set(serializedSample, f + 1);
-    }
 
-    callback(frequencies);
-    return frequencies;
-});
+        callback(frequencies);
+        return frequencies;
+    });
