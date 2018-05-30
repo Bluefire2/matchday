@@ -25,6 +25,8 @@ export type StandingsFrequency = {
     frequency: number
 };
 
+export type FrequencyMap = Map<string, number>;
+
 const constants = require('./constants'),
     LEAGUES = constants.LEAGUES;
 
@@ -195,6 +197,27 @@ const getStandingOfTeam = (standings: Standings, teamA: string): number => {
 };
 
 /**
+ * Merge two maps of standings to frequencies, adding the frequencies for duplicate keys. Note that this function
+ * mutates the maps!
+ *
+ * @param {FrequencyMap} mapA
+ * @param {FrequencyMap} mapB
+ * @returns {FrequencyMap}
+ */
+export const mergeFrequencyMaps = (mapA: FrequencyMap, mapB: FrequencyMap): FrequencyMap => {
+    for (const [k, v] of mapB) {
+        const valueA = mapA.get(k);
+        let newValue = v;
+        if (typeof valueA !== 'undefined') {
+            newValue += valueA;
+        }
+        mapA.set(k, newValue);
+    }
+
+    return mapA;
+};
+
+/**
  * Adds two sets of team standings together. For each team, adds the goal difference and points. Returns the new
  * standings array.
  *
@@ -281,7 +304,7 @@ export const mcSample = (games: Game[], pts: PointsFunction): Standings => {
  */
 export const mcSampler = (pts: PointsFunction):
     ((games: Game[], N: number) => Promise<Map<string, number>>) => Promise.method(
-        (games: Game[], N: number): Map<string, number> => {
+        (games: Game[], N: number): FrequencyMap => {
     /*
      * Although not explicitly required by the ECMA spec, the native Map object is implemented in V8 using a hashmap.
      * This gives us fast, O(1) lookups!

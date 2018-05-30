@@ -11,7 +11,7 @@ const expect = chai.expect;
 
 const {LEAGUES} = require('../lib/constants'),
     matchday = require('../lib/index'),
-    {leagueToID, getLeagueGames, getLeagueStandings, addStandings, pointsFromGame, mcSample, mcSampler} = require('../lib/util');
+    {leagueToID, getLeagueGames, getLeagueStandings, addStandings, pointsFromGame, mcSample, mcSampler, mergeFrequencyMaps} = require('../lib/util');
 
 
 const util = require('util'),
@@ -88,6 +88,40 @@ describe('util', function () {
                 });
                 return expect(result).to.eventually.be.an.instanceOf(Array);
             });
+        });
+    });
+
+    describe('mergeFrequencyMaps()', function () {
+        it('should correctly merge two empty maps', function () {
+            const mapA = new Map(),
+                mapB = new Map(),
+                mapC = mergeFrequencyMaps(mapA, mapB);
+
+            expect(wu(mapC.keys()).reduce(acc => acc + 1, 0)).to.be.equal(0);
+        });
+
+        it('should correctly merge two maps with distinct keys', function () {
+            const kvA = Object.entries({'a': 1, 'b': 2, 'c': 3}),
+                kvB = Object.entries({'d': 1, 'e': 2, 'f': 3});
+
+            const mapA = new Map(kvA),
+                mapB = new Map(kvB),
+                mapC = mergeFrequencyMaps(mapA, mapB);
+
+            kvA.forEach(([k, v]) => expect(mapC.get(k)).to.be.equal(v));
+            kvB.forEach(([k, v]) => expect(mapC.get(k)).to.be.equal(v));
+        });
+
+        it('should correctly merge two maps with overlapping keys', function () {
+            const kvA = Object.entries({'a': 1, 'b': 2, 'c': 3}),
+                kvB = Object.entries({'b': 5, 'c': -1, 'd': 7}),
+                kvC = Object.entries({'a': 1, 'b': 7, 'c': 2, 'd': 7});
+
+            const mapA = new Map(kvA),
+                mapB = new Map(kvB),
+                mapC = mergeFrequencyMaps(mapA, mapB);
+
+            kvC.forEach(([k, v]) => expect(mapC.get(k)).to.be.equal(v));
         });
     });
 
