@@ -16,6 +16,7 @@ import type {Game, Standings, StandingsFrequency} from "./util";
  * @param {String} league
  * @param {Number} [daysAhead=7]
  * @param {Number} [N=1000000] The number of iterations to run the Monte Carlo sampler.
+ * @param {Boolean} [verbose=false] Whether to display progress messages.
  * @returns {Promise}
  */
 module.exports = (league: string, daysAhead: number = 7, N: number = 1000000, verbose: boolean = false): StandingsFrequency[] => { // 10000 for now
