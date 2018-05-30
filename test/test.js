@@ -15,7 +15,8 @@ const {LEAGUES} = require('../lib/constants'),
 
 
 const util = require('util'),
-    Promise = require('bluebird');
+    Promise = require('bluebird'),
+    wu = require('wu');
 
 describe('util', function () {
     const goodLeagueNames = [
@@ -54,7 +55,7 @@ describe('util', function () {
         });
 
         goodLeagueNames.forEach(elem => {
-            it(`should resolve with an array of objects with valid [team], [goalDiff] and 
+            it(`should resolve with an array of objects with valid [team], [goalDiff] and
                 [points] properties when given valid league ${elem}`, function (done) {
                 const standings = getLeagueStandings(LEAGUES[elem]);
                 standings.then(data => {
@@ -374,8 +375,9 @@ describe('util', function () {
             const samples = sampler(threeGamesWithCertainWin, 100);
             samples.then(s => {
                 // console.log(util.inspect(s, {showHidden: false, depth: null}));
-                expect(s).to.be.an.instanceOf(Array).with.lengthOf(1);
-                expect(s[0].frequency).to.equal(100);
+                expect(s).to.be.an.instanceOf(Map);
+                expect(wu(s.keys()).reduce(acc => acc + 1, 0)).to.be.equal(1);
+                expect(s.values().next().value).to.equal(100);
                 done();
             });
         });
@@ -385,7 +387,8 @@ describe('util', function () {
             const samples = sampler(someGames, testN);
             samples.then(s => {
                 // console.log(util.inspect(s, {showHidden: false, depth: null}));
-                expect(s).to.be.an.instanceOf(Array).with.lengthOf.within(1, testN);
+                expect(s).to.be.an.instanceOf(Map);
+                expect(wu(s.keys()).reduce(acc => acc + 1, 0)).to.be.within(1, testN);
                 done();
             });
         });
@@ -393,8 +396,12 @@ describe('util', function () {
         it(`should generate cases whose frequencies add up to ${testN} when N = ${testN}`, function (done) {
             const samples = sampler(someGames, testN);
             samples.then(s => {
-                const sumFrequencies = s.reduce((acc, elem) => acc + elem.frequency, 0);
-                expect(sumFrequencies).to.equal(testN);
+                let sumFrequencies = 0;
+                for(let f of s.values()) {
+                    // console.log(f);
+                    sumFrequencies += f;
+                }
+                expect(sumFrequencies).to.be.equal(testN);
                 done();
             });
         });
