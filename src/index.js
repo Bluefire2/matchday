@@ -34,8 +34,8 @@ module.exports = (league: string, daysAhead: number = 7, N: number = 1000000, ve
     return pGames.then((games: Game[]) => {
         const promises = [];
         for (let i = 0; i < chunks; i++) {
-            if (verbose) console.log(i * CHUNK_SIZE);
-            promises.push(Promise.resolve(sampler(games, CHUNK_SIZE)));
+            let samplerCallback = verbose ? () => {console.log(i * CHUNK_SIZE + ' samples done.')} : () => {};
+            promises.push(Promise.resolve(sampler(games, CHUNK_SIZE, samplerCallback)));
         }
         promises.push(Promise.resolve(sampler(games, remainder)));
 

@@ -298,13 +298,14 @@ export const mcSample = (games: Game[], pts: PointsFunction): Standings => {
  * each distinct sample. The sampler takes the following parameters:
  *  - [games]: the array of games.
  *  - [N]: the number of samples to take.
+ *  - [callback]: the function to run when sampling has finished.
  *
  * @param {Function} pts The scoring function; the same as the parameter of the same name in [mcSample].
  * @returns {Function} The sampler function.
  */
 export const mcSampler = (pts: PointsFunction):
     ((games: Game[], N: number) => Promise<Map<string, number>>) => Promise.method(
-        (games: Game[], N: number): FrequencyMap => {
+        (games: Game[], N: number, callback: Function = () => {}): FrequencyMap => {
     /*
      * Although not explicitly required by the ECMA spec, the native Map object is implemented in V8 using a hashmap.
      * This gives us fast, O(1) lookups!
@@ -326,5 +327,6 @@ export const mcSampler = (pts: PointsFunction):
         frequencies.set(serializedSample, f + 1);
     }
 
+    callback(frequencies);
     return frequencies;
 });
