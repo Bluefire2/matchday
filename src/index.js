@@ -18,25 +18,37 @@ import type {Game, Standings, StandingsFrequency} from "./util";
  * @param {Number} [N=1000000] The number of iterations to run the Monte Carlo sampler.
  * @returns {Promise}
  */
-module.exports = (league: string, daysAhead: number = 7, N: number = 1000000): StandingsFrequency[] => { // 10000 for now
+module.exports = (league: string, daysAhead: number = 7, N: number = 1000000, verbose: boolean = false): StandingsFrequency[] => { // 10000 for now
     const leagueCode = LEAGUES[league],
         scoring = pointsFromGame(leagueCode),
         sampler = mcSampler(scoring);
 
-    const pStandings = getLeagueStandings(leagueCode),
-        pGames = getLeagueGames(leagueCode),
-        pSamples = pGames.then((games: Game[]) => {
-            return sampler(games, N);
-        });
+    const CHUNK_SIZE = 1000,
+        chunks = Math.floor(N / CHUNK_SIZE),
+        remainder = N % CHUNK_SIZE;
 
-    // TODO: use a better return type
-    return Promise.join(pStandings, pSamples, (baseStandings: Standings, samples: StandingsFrequency[]): Array<Object> => {
-        // for each sample, add the base standings
-        return samples.map(({standings, frequency}: StandingsFrequency): Object => {
-            return {
-                standings: addStandings(baseStandings, standings),
-                probability: frequency / N // normalise
-            }
+    const pStandings = getLeagueStandings(leagueCode),
+        pGames = getLeagueGames(leagueCode);
+
+    return pGames.then((games: Game[]) => {
+        const promises = [];
+        for (let i = 0; i < chunks; i++) {
+            if (verbose) console.log(i * CHUNK_SIZE);
+            promises.push(Promise.resolve(sampler(games, CHUNK_SIZE)));
+        }
+        promises.push(Promise.resolve(sampler(games, remainder)));
+
+        return Promise.join(Promise.all(promises), pStandings, (data, baseStandings) => {
+            const mappedDataUnflattened = data.map(elem => {
+                return elem.map(({standings, frequency}) => {
+                    return {
+                        standings: addStandings(baseStandings, standings),
+                        frequency
+                    };
+                });
+            });
+
+            return [].concat.apply([], mappedDataUnflattened);
         });
     });
 };

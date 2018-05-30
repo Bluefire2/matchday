@@ -411,9 +411,9 @@ describe('util', function () {
 describe('matchday', function () {
     it('should work :)', function (done) {
         // TODO: write some actual tests...
-        const p = matchday('BRASILEIRAO', 1, 100);
+        const p = matchday('BRASILEIRAO', 1, 10000, true);
         p.then(data => {
-            // console.log(util.inspect(data, {showHidden: false, depth: null}));
+            console.log(util.inspect(data, {showHidden: false, depth: null}));
             done();
         });
     });
