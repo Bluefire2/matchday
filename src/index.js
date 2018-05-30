@@ -37,6 +37,7 @@ module.exports = (league: string,
 
     return pGames.then((games: Game[]) => {
         const promises = [];
+        if (verbose) console.log('Sampling...');
         for (let i = 0; i < chunks; i++) {
             let samplerCallback = verbose ? () => {
                 console.log(i * CHUNK_SIZE + ' samples done.')
@@ -47,9 +48,21 @@ module.exports = (league: string,
         promises.push(Promise.resolve(sampler(games, remainder)));
 
         return Promise.join(Promise.all(promises), pStandings, (data, baseStandings) => {
-            const flattenedData = data.reduce((acc, elem) => mergeFrequencyMaps(acc, elem), new Map());
+            const flattenedMap = data.reduce((acc, elem) => mergeFrequencyMaps(acc, elem), new Map()),
+                dataWithBaseStandings = new Map();
 
-            return flattenedData; // TODO: add the base standings to the keys
+            if (verbose) console.log('Sampling done, applying base standings...');
+
+            for (const [standingsAsString, frequency] of flattenedMap) {
+                // TODO: optimise this somehow, so that it doesn't deserialise and then serialise again...
+                const standings = JSON.parse(standingsAsString),
+                    totalStandingsAsString = JSON.stringify(addStandings(baseStandings, standings));
+                dataWithBaseStandings.set(totalStandingsAsString, frequency)
+            }
+
+            if (verbose) console.log('Finished.');
+
+            return dataWithBaseStandings;
         });
     });
 };
