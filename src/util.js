@@ -2,6 +2,15 @@
 
 import {GAMES_CSV_URL, LEAGUES} from "./constants";
 
+import Promise from 'bluebird';
+import csvParse from 'csv-parse';
+import moment from 'moment';
+import axios from 'axios';
+import cheerio from 'cheerio';
+
+const parse = Promise.promisify(csvParse);
+moment().format();
+
 export type Game = {
     team1: string,
     team2: string,
@@ -23,15 +32,6 @@ export type GameResult = 1 | 0 | -1;
 export type PointsFunction = (GameResult) => number[];
 
 export type FrequencyMap = Map<string, number>;
-
-const Promise = require('bluebird'),
-    parse = Promise.promisify(require('csv-parse')),
-    fs = Promise.promisifyAll(require('fs')),
-    moment = require('moment'),
-    axios = require('axios'),
-    cheerio = require('cheerio');
-
-moment().format();
 
 /**
  * Gives the SPI league id for [league].
