@@ -26,7 +26,7 @@ Currently supported leagues are:
 | Campeonato Brasileiro Série A      | BRASILEIRAO      |
 
 ### Output schema
-The `standings` object (the value of the Promise) is an array of team standings and probabilities. A team standing is an array of objects of the following form:
+The value of the `Promise` is a `Map` of team standings to probabilities. A team standing is an array of objects of the following form:
 
 ```javascript
 {
@@ -36,14 +36,7 @@ The `standings` object (the value of the Promise) is an array of team standings 
 }
 ```
 
-Therefore, the final output is an array of objects that look like this:
-
-```javascript
-{
-    "standings": ..., // the team standings
-    "probability": 0.01 // the probability of this event
-}
-```
+The team standings are keys of the `Map`, and so are in text form as JSON. The value of each standing key is its approximate probability, as calculated by the sampler.
 
 ### Known issues
 Note that this project is very new and probably quite buggy. There is a known issue where there is a socket hang up after processing a large number of samples.
