@@ -1,5 +1,7 @@
 // @flow
 
+import {GAMES_CSV_URL, LEAGUES} from "./constants";
+
 export type Game = {
     team1: string,
     team2: string,
@@ -21,9 +23,6 @@ export type GameResult = 1 | 0 | -1;
 export type PointsFunction = (GameResult) => number[];
 
 export type FrequencyMap = Map<string, number>;
-
-const constants = require('./constants'),
-    LEAGUES = constants.LEAGUES;
 
 const Promise = require('bluebird'),
     parse = Promise.promisify(require('csv-parse')),
@@ -160,10 +159,8 @@ export const getLeagueGames = Promise.method(function (league: string, daysAhead
     // to round up to the nearest day, we can add 1 day and then round down:
     const maxDate = moment().add(daysAhead + 1, 'days').startOf('day');
     const leagueID = leagueToID(league);
-    // for now, get data from the hardcoded .csv file
-    // TODO: change this and instead fetch live data from the server
     const filepath = './data/spi_matches.csv';
-    return fs.readFileAsync(filepath).then(csv => {
+    return axios.get(GAMES_CSV_URL).then(({data: csv}) => {
         return parse(csv, {columns: true});
     }).then(output => {
         return output

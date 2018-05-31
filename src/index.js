@@ -35,9 +35,10 @@ module.exports = (league: string,
     const pStandings = getLeagueStandings(leagueCode),
         pGames = getLeagueGames(leagueCode);
 
+    if (verbose) console.log('Fetching games...');
     return pGames.then((games: Game[]) => {
         const promises = [];
-        if (verbose) console.log('Sampling...');
+        if (verbose) console.log('Games downloaded, starting sampling...');
         for (let i = 0; i < chunks; i++) {
             let samplerCallback = verbose ? () => {
                 console.log((i + 1) * CHUNK_SIZE + ' samples done.')
