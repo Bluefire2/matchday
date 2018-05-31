@@ -46,4 +46,4 @@ Therefore, the final output is an array of objects that look like this:
 ```
 
 ### Known issues
-Note that this project is very new and not currently usable.
+Note that this project is very new and probably quite buggy. There is a known issue where there is a socket hang up after processing a large number of samples.

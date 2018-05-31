@@ -57,8 +57,9 @@ module.exports = (league: string,
             for (const [standingsAsString, frequency] of flattenedMap) {
                 // TODO: optimise this somehow, so that it doesn't deserialise and then serialise again...
                 const standings = JSON.parse(standingsAsString),
-                    totalStandingsAsString = JSON.stringify(addStandings(baseStandings, standings));
-                dataWithBaseStandings.set(totalStandingsAsString, frequency)
+                    totalStandingsAsString = JSON.stringify(addStandings(baseStandings, standings)),
+                    probability = frequency / N;
+                dataWithBaseStandings.set(totalStandingsAsString, probability)
             }
 
             if (verbose) console.log('Finished.');
