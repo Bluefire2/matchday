@@ -155,11 +155,10 @@ export const getLeagueStandings = (league: string): Promise<Standings> => {
  * @param daysAhead
  * @returns {Promise}
  */
-export const getLeagueGames = Promise.method(function (league: string, daysAhead: number = 7): Promise<Game[]> {
+export const getLeagueGames = Promise.method(function (league: string, daysAhead: number): Promise<Game[]> {
     // to round up to the nearest day, we can add 1 day and then round down:
     const maxDate = moment().add(daysAhead + 1, 'days').startOf('day');
     const leagueID = leagueToID(league);
-    const filepath = './data/spi_matches.csv';
     return axios.get(GAMES_CSV_URL).then(({data: csv}) => {
         return parse(csv, {columns: true});
     }).then(output => {
