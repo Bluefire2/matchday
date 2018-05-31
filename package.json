@@ -1,6 +1,6 @@
 {
   "name": "matchday",
-  "version": "0.3.0",
+  "version": "1.0.0",
   "repository": "https://github.com/Bluefire2/matchday.git",
   "description": "",
   "main": "lib/index.js",
