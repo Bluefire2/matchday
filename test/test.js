@@ -445,8 +445,12 @@ describe('util', function () {
 describe('matchday', function () {
     it('should work :)', function (done) {
         // TODO: write some actual tests...
-        const p = matchday('BRASILEIRAO', 1, 1000, true);
-        p.then(data => {
+        const p = matchday('BRASILEIRAO', 1, 1000, true),
+            q = matchday('PREMIER', 1, 1000),
+            r = matchday('BRASILEIRAO', 1, 1000, false, 1000),
+            s = matchday('PREMIER', 1),
+            t = matchday('PREMIER');
+        Promise.all(p, q, r, s, t).then(data => {
             // console.log(util.inspect(data, {showHidden: false, depth: null}));
             done();
         });
