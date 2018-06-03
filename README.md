@@ -3,7 +3,7 @@
 matchday is a Node.js module that calculates the approximate probabilities of potential team standings in football (soccer) leagues after a certain period of time.
 
 ### Installation
-You can install matchday from NPM with install with `npm i -S matchday`.
+You can install matchday from NPM with `npm i -S matchday`.
 
 ### Usage
  When running matchday, specify the league code, the number of days to look ahead, and, optionally, the amount of times to run the random sampler:
