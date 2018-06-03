@@ -1,6 +1,4 @@
-# matchday
-[![Build Status](https://travis-ci.org/Bluefire2/matchday.svg?branch=master)](https://travis-ci.org/Bluefire2/matchday)
-[![Coverage Status](https://coveralls.io/repos/github/Bluefire2/matchday/badge.svg?branch=master)](https://coveralls.io/github/Bluefire2/matchday?branch=master)
+# matchday [![Build Status](https://travis-ci.org/Bluefire2/matchday.svg?branch=master)](https://travis-ci.org/Bluefire2/matchday) [![Coverage Status](https://coveralls.io/repos/github/Bluefire2/matchday/badge.svg?branch=master)](https://coveralls.io/github/Bluefire2/matchday?branch=master)
 
 matchday is a Node.js module that calculates the approximate probabilities of potential team standings in football (soccer) leagues after a certain period of time.
 
