@@ -26,8 +26,7 @@ module.exports = (league: string,
                   verbose: boolean = false,
                   CHUNK_SIZE: number = 10000): FrequencyMap => {
     const leagueCode = LEAGUES[league],
-        scoring = pointsFromGame(leagueCode),
-        sampler = mcSampler(scoring);
+        scoring = pointsFromGame(leagueCode);
 
     const chunks = Math.floor(N / CHUNK_SIZE),
         remainder = N % CHUNK_SIZE;
@@ -37,6 +36,7 @@ module.exports = (league: string,
 
     if (verbose) console.log('Fetching games...');
     return pGames.then((games: Game[]) => {
+        const sampler = mcSampler(games, scoring);
         const promises = [];
         if (verbose) console.log(`${games.length} games downloaded, starting sampling...`);
         for (let i = 0; i < chunks; i++) {
@@ -44,9 +44,9 @@ module.exports = (league: string,
                 console.log((i + 1) * CHUNK_SIZE + ' samples done.')
             } : () => {
             };
-            promises.push(Promise.resolve(sampler(games, CHUNK_SIZE, samplerCallback)));
+            promises.push(Promise.resolve(sampler(CHUNK_SIZE, samplerCallback)));
         }
-        promises.push(Promise.resolve(sampler(games, remainder)));
+        promises.push(Promise.resolve(sampler(remainder)));
 
         return Promise.join(Promise.all(promises), pStandings, (data, baseStandings) => {
             const flattenedMap = data.reduce((acc, elem) => mergeFrequencyMaps(acc, elem), new Map()),

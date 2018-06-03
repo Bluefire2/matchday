@@ -7,6 +7,7 @@ import csvParse from 'csv-parse';
 import moment from 'moment';
 import axios from 'axios';
 import cheerio from 'cheerio';
+import sortUnique from 'sort-unique';
 
 const parse = Promise.promisify(csvParse);
 moment().format();
@@ -241,22 +242,69 @@ export const addStandings = (standingsA: Standings, standingsB: Standings): Stan
 };
 
 /**
+ * Calculates the ordering of teams to be used in populating the sample object.
+ *
+ * @param {Game[]} games The games that are being sampled.
+ * @return {Map<String, Number>}
+ */
+export const teamOrderingFromGames = (games: Game[]): Map<string, number> => {
+    const teams = games.reduce((acc, {team1, team2}) => {
+        return acc.concat([team1, team2]);
+    }, []);
+    const uniqueTeams = sortUnique(teams),
+        ordering = new Map();
+    uniqueTeams.forEach((elem, index) => {
+        ordering.set(elem, index);
+    });
+    return ordering;
+};
+
+/**
+ * Generates an empty team standing initialised with zero values.
+ *
+ * @param {string} team The name of the team.
+ * @returns {Standing}
+ */
+const emptyStanding = (team: string): Standing => {
+    return {
+        team,
+        goalDiff: 0,
+        points: 0
+    }
+};
+
+/**
  * Generates a single Monte Carlo sample from the games array [games] by the following method:
  *  - Compute a single outcome sample for the first game, resulting in a win, loss, or tie.
  *  - Compute the points each team in the game receives as a result of said outcome, using the scoring function [pts].
  *  - Create a mini set of "standings" for the two teams, based on the point values from the previous step.
  *  - Repeat the above steps for each game, and aggregate all the "standings" into one standings array, and return it.
  *
- * @param {Array} games The array of games to be played. Each game object must have the following properties:
+ * @param {Map<String, Number>} teamOrdering An ordering for all the teams in this league that have games, in the form
+ * of a Map of team names to indices. For example, if the league contains teams A, B and C, but we are only sampling
+ * from games with B and C, the map must not contain A. For this function to work properly, this parameter must be kept
+ * constant over subsequent calls. This is achieved in [mcSampler()].
+ * @param {Game[]} games The array of games to be played. Each game object must have the following properties:
  *  - team1, team2: the names of the two teams.
  *  - prob1, prob2, probtie: the probabilities of team 1 winning, team 2 winning, or a tie (these must sum to 1).
- * @param {Function} pts The scoring function, which must map the numbers 1, 0, and -1 to an array of two integer
+ * @param {PointsFunction} pts The scoring function, which must map the numbers 1, 0, and -1 to an array of two integer
  * values. This function should be generated from a league using [pointsFromGame].
- * @returns {Array} The standings from playing each game.
+ * @returns {Standings} The standings from playing each game.
  */
-export const mcSample = (games: Game[], pts: PointsFunction): Standings => {
-    // MapReduce :D
-    const gameResults = games.map(({team1, team2, prob1, prob2, probtie}) => {
+export const mcSample = (teamOrdering: Map<string, number>, games: Game[], pts: PointsFunction): Standings => {
+    /*
+     * The key here is the fact that addStandings() is incredibly inefficient in this particular context. This is
+     * because we have two crucial pieces of information: that we're only adding two teams at a time, and that we can
+     * predict the order of each team in the rankings array. Knowing both of those things allows an optimisation to be
+     * made, bypassing the more generic addStandings.
+     *
+     * How do we know the order of each team? Well, we can calculate it for every league. Now, what is a deterministic
+     * method that puts all of the teams in a specific order? That's right, we can order by team name, since we can
+     * assume that all teams have different names (we can't make the same assumption about goal differences or points).
+     * In order to avoid calculating this every time, we can calculate it once in mcSampler() and just pass it into
+     * mcSample() every time it is called.
+     */
+    const gameResults: Standings[] = games.map(({team1, team2, prob1, prob2, probtie}: Game): Standings => {
         // TODO: implement goal estimation for goal difference
         const [goals1, goals2] = [0, 0],
             gd = goals1 - goals2,
@@ -279,45 +327,72 @@ export const mcSample = (games: Game[], pts: PointsFunction): Standings => {
         ];
     });
 
-    // add all of the mini standings
-    return gameResults.reduce(addStandings, []);
+    // Fill the array with empty standing objects
+    const emptyStandings: Standings = [];
+    for (let [team, index] of teamOrdering) {
+        emptyStandings[index] = emptyStanding(team);
+    }
+
+    return gameResults.reduce((acc: Standings, [standingA, standingB]: Standings): Standings => {
+        // destructure here instead of the function signature to avoid clutter
+        const {team: teamA, goalDiff: goalDiffA, points: pointsA} = standingA,
+            {team: teamB, goalDiff: goalDiffB, points: pointsB} = standingB;
+
+        const teamAIndex = teamOrdering.get(teamA),
+            teamBIndex = teamOrdering.get(teamB);
+
+        if (typeof teamAIndex !== 'undefined') { // this check keeps flow happy
+            // merge standings as necessary
+            const {team, goalDiff, points} = acc[teamAIndex]; // guaranteed to be defined since we've filled the array
+            acc[teamAIndex] = {team, goalDiff: goalDiff + goalDiffA, points: points + pointsA};
+        }
+
+        if (typeof teamBIndex !== 'undefined') {
+            // merge standings as necessary
+            const {team, goalDiff, points} = acc[teamBIndex];
+            acc[teamBIndex] = {team, goalDiff: goalDiff + goalDiffB, points: points + pointsB};
+        }
+
+        return acc;
+    }, emptyStandings);
 };
 
 /**
  * Creates a Monte Carlo sampler for a specific scoring function: a function that takes a certain number of Monte Carlo
  * samples from an array of games, as above, and returns an array of the sample team standings, with frequencies for
  * each distinct sample. The sampler takes the following parameters:
- *  - [games]: the array of games.
  *  - [N]: the number of samples to take.
  *  - [callback]: the function to run when sampling has finished.
  *
- * @param {Function} pts The scoring function; the same as the parameter of the same name in [mcSample].
+ * @param {Game[]} games The array of games to sample from.
+ * @param {PointsFunction} pts The scoring function; the same as the parameter of the same name in [mcSample].
  * @returns {Function} The sampler function.
  */
-export const mcSampler = (pts: PointsFunction): ((games: Game[], N: number, callback: ?Function) => Promise<Map<string, number>>) => Promise.method(
-    (games: Game[], N: number, callback: Function = () => {
-    }): FrequencyMap => {
-        /*
-         * Although not explicitly required by the ECMA spec, the native Map object is implemented in V8 using a hashmap.
-         * This gives us fast, O(1) lookups!
-         */
-        const frequencies = new Map();
-        for (let i = 0; i < N; i++) {
-            // we need to sort in some way before serialising so that it can detect equal arrays
-            // use the fact that all team names must be different:
-            // TODO: instead of sorting, assign the team rankings in a pre-specified order
-            const sample = mcSample(games, pts).sort(({team: teamA}, {team: teamB}) => teamA < teamB ? 1 : -1),
-                serializedSample = JSON.stringify(sample),
-                value = frequencies.get(serializedSample);
+export const mcSampler = (games: Game[], pts: PointsFunction): ((N: number, callback: ?Function) => Promise<Map<string, number>>) => {
+    // calculate the team ordering
+    const ordering = teamOrderingFromGames(games);
+    return Promise.method(
+        (N: number, callback: Function = () => {
+        }): FrequencyMap => {
+            /*
+             * Although not explicitly required by the ECMA spec, the native Map object is implemented in V8 using a hashmap.
+             * This gives us fast, O(1) lookups!
+             */
+            const frequencies = new Map();
+            for (let i = 0; i < N; i++) {
+                const sample = mcSample(ordering, games, pts).sort(({team: teamA}, {team: teamB}) => teamA < teamB ? 1 : -1),
+                    serializedSample = JSON.stringify(sample),
+                    value = frequencies.get(serializedSample);
 
-            let f = 0;
-            if (typeof value !== 'undefined') {
-                // key already exists
-                f = value;
+                let f = 0;
+                if (typeof value !== 'undefined') {
+                    // key already exists
+                    f = value;
+                }
+                frequencies.set(serializedSample, f + 1);
             }
-            frequencies.set(serializedSample, f + 1);
-        }
 
-        callback(frequencies);
-        return frequencies;
-    });
+            callback(frequencies);
+            return frequencies;
+        });
+};

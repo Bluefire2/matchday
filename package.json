@@ -33,6 +33,7 @@
     "csv-parse": "^2.4.0",
     "fs": "0.0.1-security",
     "md5": "^2.2.1",
-    "moment": "^2.22.1"
+    "moment": "^2.22.1",
+    "sort-unique": "^1.0.0"
   }
 }

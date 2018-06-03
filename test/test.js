@@ -11,7 +11,7 @@ const expect = chai.expect;
 
 const {LEAGUES} = require('../lib/constants'),
     matchday = require('../lib/index'),
-    {leagueToID, getLeagueGames, getLeagueStandings, addStandings, pointsFromGame, mcSample, mcSampler, mergeFrequencyMaps} = require('../lib/util');
+    {leagueToID, getLeagueGames, getLeagueStandings, addStandings, pointsFromGame, mcSample, mcSampler, mergeFrequencyMaps, teamOrderingFromGames} = require('../lib/util');
 
 
 const util = require('util'),
@@ -31,6 +31,47 @@ describe('util', function () {
         'abcdef',
         'hello world'
     ];
+
+    const someGames = [
+        {
+            team1: 'Manchester United',
+            team2: 'Manchester City',
+            prob1: 0.4,
+            prob2: 0.4,
+            probtie: 0.2
+        },
+        {
+            team1: 'Manchester City',
+            team2: 'Liverpool',
+            prob1: 0.5,
+            prob2: 0.3,
+            probtie: 0.2
+        },
+        {
+            team1: 'Chelsea',
+            team2: 'Liverpool',
+            prob1: 0.3,
+            prob2: 0.4,
+            probtie: 0.3
+        },
+        {
+            team1: 'Manchester United',
+            team2: 'Crystal Palace',
+            prob1: 0.8,
+            prob2: 0.05,
+            probtie: 0.15
+        },
+        {
+            team1: 'Newcastle United',
+            team2: 'Manchester City',
+            prob1: 0.1,
+            prob2: 0.7,
+            probtie: 0.2
+        }
+    ];
+
+    const someTeamNames = ['Manchester City', 'Manchester United', 'Liverpool',
+        'Chelsea', 'Crystal Palace', 'Newcastle United'];
 
     describe('leagueToID()', function () {
         const leagueToIDTests = [
@@ -225,11 +266,29 @@ describe('util', function () {
         });
     });
 
+    describe('teamOrderingFromGames()', function () {
+        it('should give an empty array when there are no games', function () {
+            const ordering = teamOrderingFromGames([]);
+
+            expect(ordering.size).to.equal(0);
+        });
+
+        it('should give an alphabetically sorted array of the team names when given a set of games', function () {
+            const ordering = teamOrderingFromGames(someGames);
+
+            expect(ordering).to.satisfy(ord => {
+                // careful not to mutate the array, since we need it later
+                const sortedNames = someTeamNames.slice().sort();
+                return sortedNames.every((name, index) => ord.get(name) === index);
+            });
+        });
+    });
+
     describe('mcSample()', function () {
         const scoring = pointsFromGame('PREMIER');
 
         it('should give an empty array if there are no games to be played', function () {
-            const result = mcSample([], scoring);
+            const result = mcSample(teamOrderingFromGames([]), [], scoring);
             expect(result).to.be.an.instanceOf(Array).with.lengthOf(0);
         });
 
@@ -262,7 +321,7 @@ describe('util', function () {
             ];
 
         it('should give a standing with team1 on top when team1 is guaranteed to win the only game', function () {
-            const result = mcSample(oneGameWithCertainWin, scoring);
+            const result = mcSample(teamOrderingFromGames(oneGameWithCertainWin), oneGameWithCertainWin, scoring);
             expect(result).to.be.an.instanceOf(Array).with.lengthOf(2);
 
             const cityPts = result.find(({team}) => team === 'Manchester City').points,
@@ -272,7 +331,7 @@ describe('util', function () {
         });
 
         it('should give a standing with team2 on top when team2 is guaranteed to win the only game', function () {
-            const result = mcSample(oneGameWithCertainLoss, scoring);
+            const result = mcSample(teamOrderingFromGames(oneGameWithCertainLoss), oneGameWithCertainLoss, scoring);
             expect(result).to.be.an.instanceOf(Array).with.lengthOf(2);
 
             const cityPts = result.find(({team}) => team === 'Manchester City').points,
@@ -282,7 +341,7 @@ describe('util', function () {
         });
 
         it('should give a standing with team1 and team2 equal when the only game is guaranteed to be tied', function () {
-            const result = mcSample(oneGameWithCertainTie, scoring);
+            const result = mcSample(teamOrderingFromGames(oneGameWithCertainTie), oneGameWithCertainTie, scoring);
             expect(result).to.be.an.instanceOf(Array).with.lengthOf(2);
 
             const cityPts = result.find(({team}) => team === 'Manchester City').points,
@@ -291,58 +350,14 @@ describe('util', function () {
             expect(cityPts).to.be.equal(unitedPts);
         });
 
-        const someGames = [
-            {
-                team1: 'Manchester United',
-                team2: 'Manchester City',
-                prob1: 0.4,
-                prob2: 0.4,
-                probtie: 0.2
-            },
-            {
-                team1: 'Manchester City',
-                team2: 'Liverpool',
-                prob1: 0.5,
-                prob2: 0.3,
-                probtie: 0.2
-            },
-            {
-                team1: 'Chelsea',
-                team2: 'Liverpool',
-                prob1: 0.3,
-                prob2: 0.4,
-                probtie: 0.3
-            },
-            {
-                team1: 'Manchester United',
-                team2: 'Crystal Palace',
-                prob1: 0.8,
-                prob2: 0.05,
-                probtie: 0.15
-            },
-            {
-                team1: 'Newcastle United',
-                team2: 'Manchester City',
-                prob1: 0.1,
-                prob2: 0.7,
-                probtie: 0.2
-            }
-        ];
-
-        const someTeamNames = ['Manchester City', 'Manchester United', 'Liverpool',
-            'Chelsea', 'Crystal Palace', 'Newcastle United'];
-
         it('should preserve team names when run on a list of games', function () {
-            const result = mcSample(someGames, scoring);
+            const result = mcSample(teamOrderingFromGames(someGames), someGames, scoring);
 
             expect(someTeamNames).to.all.satisfy(teamA => result.some(({team}) => team === teamA));
         });
     });
 
     describe('mcSampler()', function () {
-        const scoring = pointsFromGame('PREMIER'),
-            sampler = mcSampler(scoring);
-
         const someGames = [
             {
                 team1: 'Manchester United',
@@ -405,8 +420,10 @@ describe('util', function () {
             },
         ];
 
+        const scoring = pointsFromGame('PREMIER');
+
         it('should identify all outcomes as equal if there is only one outcome', function (done) {
-            const samples = sampler(threeGamesWithCertainWin, 100);
+            const samples = mcSampler(threeGamesWithCertainWin, scoring)(100);
             samples.then(s => {
                 // console.log(util.inspect(s, {showHidden: false, depth: null}));
                 expect(s).to.be.an.instanceOf(Map);
@@ -418,7 +435,7 @@ describe('util', function () {
 
         const testN = 10000;
         it(`should generate between 1 and ${testN} cases when N = ${testN}`, function (done) {
-            const samples = sampler(someGames, testN);
+            const samples = mcSampler(someGames, scoring)(testN);
             samples.then(s => {
                 // console.log(util.inspect(s, {showHidden: false, depth: null}));
                 expect(s).to.be.an.instanceOf(Map);
@@ -428,7 +445,7 @@ describe('util', function () {
         });
 
         it(`should generate cases whose frequencies add up to ${testN} when N = ${testN}`, function (done) {
-            const samples = sampler(someGames, testN);
+            const samples = mcSampler(someGames, scoring)(testN);
             samples.then(s => {
                 let sumFrequencies = 0;
                 for(let f of s.values()) {
