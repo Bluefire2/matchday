@@ -422,39 +422,12 @@ describe('util', function () {
 
         const scoring = pointsFromGame('PREMIER');
 
-        it('should identify all outcomes as equal if there is only one outcome', function (done) {
-            const samples = mcSampler(threeGamesWithCertainWin, scoring)(100);
-            samples.then(s => {
-                // console.log(util.inspect(s, {showHidden: false, depth: null}));
-                expect(s).to.be.an.instanceOf(Map);
-                expect(wu(s.keys()).reduce(acc => acc + 1, 0)).to.be.equal(1);
-                expect(s.values().next().value).to.equal(100);
-                done();
-            });
-        });
-
         const testN = 10000;
-        it(`should generate between 1 and ${testN} cases when N = ${testN}`, function (done) {
+        it(`should generate ${testN} cases when N = ${testN}`, function (done) {
             const samples = mcSampler(someGames, scoring)(testN);
-            samples.then(s => {
-                // console.log(util.inspect(s, {showHidden: false, depth: null}));
-                expect(s).to.be.an.instanceOf(Map);
-                expect(wu(s.keys()).reduce(acc => acc + 1, 0)).to.be.within(1, testN);
-                done();
-            });
-        });
-
-        it(`should generate cases whose frequencies add up to ${testN} when N = ${testN}`, function (done) {
-            const samples = mcSampler(someGames, scoring)(testN);
-            samples.then(s => {
-                let sumFrequencies = 0;
-                for(let f of s.values()) {
-                    // console.log(f);
-                    sumFrequencies += f;
-                }
-                expect(sumFrequencies).to.be.equal(testN);
-                done();
-            });
+            // console.log(util.inspect(s, {showHidden: false, depth: null}));
+            expect(samples).to.be.an.instanceOf(Array).and.have.lengthOf(testN);
+            done();
         });
     });
 });
@@ -464,10 +437,8 @@ describe('matchday', function () {
         // TODO: write some actual tests...
         const p = matchday('BRASILEIRAO', 1, 1000, true),
             q = matchday('PREMIER', 1, 1000),
-            r = matchday('BRASILEIRAO', 1, 1000, false, 1000),
-            s = matchday('PREMIER', 1),
-            t = matchday('PREMIER');
-        Promise.all(p, q, r, s, t).then(data => {
+            r = matchday('BRASILEIRAO', 1, 1000, false, 1000);
+        Promise.all(p, q, r).then(data => {
             // console.log(util.inspect(data, {showHidden: false, depth: null}));
             done();
         });

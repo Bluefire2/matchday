@@ -1,6 +1,7 @@
 // @flow
 
 import {GAMES_CSV_URL, LEAGUES} from "./constants";
+import {convertESPNTeam} from "./convert";
 
 import Promise from 'bluebird';
 import csvParse from 'csv-parse';
@@ -8,6 +9,7 @@ import moment from 'moment';
 import axios from 'axios';
 import cheerio from 'cheerio';
 import sortUnique from 'sort-unique';
+import {remove as removeDiacritics} from 'diacritics';
 
 const parse = Promise.promisify(csvParse);
 moment().format();
@@ -33,6 +35,8 @@ export type GameResult = 1 | 0 | -1;
 export type PointsFunction = (GameResult) => number[];
 
 export type FrequencyMap = Map<string, number>;
+
+export type ComparatorResult = 1 | 0 | -1;
 
 /**
  * Gives the SPI league id for [league].
@@ -141,7 +145,7 @@ export const getLeagueStandings = (league: string): Promise<Standings> => {
                     pointsTd = $(tds[8]),
                     points = parseInt($(pointsTd).text());
                 return {
-                    team,
+                    team: convertESPNTeam(removeDiacritics(team)),
                     goalDiff,
                     points
                 };
@@ -171,7 +175,15 @@ export const getLeagueGames = Promise.method(function (league: string, daysAhead
             })
             .map(({date, team1, team2, prob1, prob2, probtie, proj_score1, proj_score2}) => {
                 // keep only relevant properties
-                return {date, team1, team2, prob1, prob2, probtie, proj_score1, proj_score2};
+                return {
+                    date,
+                    team1: removeDiacritics(team1),
+                    team2: removeDiacritics(team2),
+                    prob1,
+                    prob2,
+                    probtie,
+                    proj_score1,
+                    proj_score2};
             });
     });
 });
@@ -274,6 +286,24 @@ const emptyStanding = (team: string): Standing => {
 };
 
 /**
+ * Sorting comparator function for standings. Returns -1 for above, 1 for below, and 0 for equal.
+ *
+ * @param {Standing} standingA
+ * @param {Standing} standingB
+ */
+export const compareStandings =
+    ({team: teamA, points: pointsA, goalDiff: goalDiffA}: Standing,
+     {team: teamB, points: pointsB, goalDiff: goalDiffB}: Standing): ComparatorResult => {
+    if (pointsA < pointsB) return 1;
+    else if (pointsA > pointsB) return -1;
+    else {
+        if (goalDiffA < goalDiffB) return 1;
+        else if (goalDiffA > goalDiffB) return -1;
+        else return teamA < teamB ? 1 : -1; // TODO: how should this actually work?
+    }
+};
+
+/**
  * Generates a single Monte Carlo sample from the games array [games] by the following method:
  *  - Compute a single outcome sample for the first game, resulting in a win, loss, or tie.
  *  - Compute the points each team in the game receives as a result of said outcome, using the scoring function [pts].
@@ -368,31 +398,17 @@ export const mcSample = (teamOrdering: Map<string, number>, games: Game[], pts: 
  * @param {PointsFunction} pts The scoring function; the same as the parameter of the same name in [mcSample].
  * @returns {Function} The sampler function.
  */
-export const mcSampler = (games: Game[], pts: PointsFunction): ((N: number, callback: ?Function) => Promise<Map<string, number>>) => {
+export const mcSampler = (games: Game[], pts: PointsFunction): ((N: number, callback?: Function) => Array<Standings>) => {
     // calculate the team ordering
     const ordering = teamOrderingFromGames(games);
-    return Promise.method(
-        (N: number, callback: Function = () => {
-        }): FrequencyMap => {
-            /*
-             * Although not explicitly required by the ECMA spec, the native Map object is implemented in V8 using a hashmap.
-             * This gives us fast, O(1) lookups!
-             */
-            const frequencies = new Map();
-            for (let i = 0; i < N; i++) {
-                const sample = mcSample(ordering, games, pts).sort(({team: teamA}, {team: teamB}) => teamA < teamB ? 1 : -1),
-                    serializedSample = JSON.stringify(sample),
-                    value = frequencies.get(serializedSample);
+    return (N: number, callback?: Function = () => {
+        }): Array<Standings> => {
+        const samples = [];
+        for (let i = 0; i < N; i++) {
+            samples.push(mcSample(ordering, games, pts));
+        }
 
-                let f = 0;
-                if (typeof value !== 'undefined') {
-                    // key already exists
-                    f = value;
-                }
-                frequencies.set(serializedSample, f + 1);
-            }
-
-            callback(frequencies);
-            return frequencies;
-        });
+        callback();
+        return samples;
+    };
 };

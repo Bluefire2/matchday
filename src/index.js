@@ -5,9 +5,13 @@
 const constants = require('./constants'),
     LEAGUES = constants.LEAGUES;
 
-import {getLeagueStandings, getLeagueGames, mcSampler, pointsFromGame, addStandings, mergeFrequencyMaps} from './util';
+import {
+    getLeagueStandings, getLeagueGames, mcSampler, pointsFromGame, addStandings, mergeFrequencyMaps,
+    compareStandings
+} from './util';
 import Promise from 'bluebird';
-import type {FrequencyMap, Game} from "./util";
+import type {FrequencyMap, Game, Standing, Standings} from "./util";
+import stream from 'stream';
 
 /**
  * Calculate the distributions of potential rankings for each team in [league], from games in the next [daysAhead] days,
@@ -35,36 +39,46 @@ module.exports = (league: string,
         pGames = getLeagueGames(leagueCode, daysAhead);
 
     if (verbose) console.log('Fetching games...');
-    return pGames.then((games: Game[]) => {
-        const sampler = mcSampler(games, scoring);
-        const promises = [];
+    return Promise.join(pStandings, pGames, (standings: Standings, games: Game[]) => {
+        const sampler = mcSampler(games, scoring),
+            samplesStream = new stream.Readable({objectMode: true});
+
+        const standingFrequencies = new Map(),
+            nTeams = standings.length;
+        // Initialise frequencies (all zeroes):
+        standings.forEach(({team}: Standing) => {
+            standingFrequencies.set(team, new Array(nTeams).fill(0));
+        });
+
+        const reduceSample = (sample: Standings) => {
+            // We got the sample, now reduce on the fly:
+            const total = addStandings(standings, sample),
+                sorted = total.sort(compareStandings);
+            sorted.forEach(({team}: Standing, index: number) => {
+                // For each standing, merge into the frequency map:
+                const currentFrequencies = standingFrequencies.get(team);
+                // damnit Flow,
+                if (currentFrequencies !== undefined && currentFrequencies !== null) currentFrequencies[index]++;
+                standingFrequencies.set(team, currentFrequencies);
+            });
+        };
+
         if (verbose) console.log(`${games.length} games downloaded, starting sampling...`);
         for (let i = 0; i < chunks; i++) {
-            let samplerCallback = verbose ? () => {
-                console.log((i + 1) * CHUNK_SIZE + ' samples done.')
-            } : () => {
-            };
-            promises.push(Promise.resolve(sampler(CHUNK_SIZE, samplerCallback)));
+            sampler(CHUNK_SIZE).forEach(reduceSample);
+            console.log((i + 1) * CHUNK_SIZE + ' samples done.');
         }
-        promises.push(Promise.resolve(sampler(remainder)));
 
-        return Promise.join(Promise.all(promises), pStandings, (data, baseStandings) => {
-            const flattenedMap = data.reduce((acc, elem) => mergeFrequencyMaps(acc, elem), new Map()),
-                dataWithBaseStandings = new Map();
+        sampler(remainder).forEach(reduceSample);
+        console.log('All samples done.');
 
-            if (verbose) console.log('Sampling done, applying base standings...');
-
-            for (const [standingsAsString, frequency] of flattenedMap) {
-                // TODO: optimise this somehow, so that it doesn't deserialise and then serialise again...
-                const standings = JSON.parse(standingsAsString),
-                    totalStandingsAsString = JSON.stringify(addStandings(baseStandings, standings)),
-                    probability = frequency / N;
-                dataWithBaseStandings.set(totalStandingsAsString, probability)
-            }
-
-            if (verbose) console.log('Finished.');
-
-            return dataWithBaseStandings;
+        // probabilities are just frequencies divided by N
+        const standingProbabilities = new Map();
+        standingFrequencies.forEach((value: ?Array<number>, key: string) => {
+            // need this check so Flow doesn't complain
+            if (value !== undefined && value !== null) standingProbabilities.set(key, value.map(elem => elem / N));
         });
+
+        return standingProbabilities;
     });
 };
