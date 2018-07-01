@@ -79,6 +79,9 @@ module.exports = (league: string,
             if (value !== undefined && value !== null) standingProbabilities.set(key, value.map(elem => elem / N));
         });
 
-        return standingProbabilities;
+        return {
+            probabilities: standingProbabilities,
+            standings: standings
+        };
     });
 };
