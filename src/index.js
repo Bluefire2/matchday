@@ -85,3 +85,5 @@ module.exports = (league: string,
         };
     });
 };
+
+module.exports.leaguesSupported = Object.keys(LEAGUES);
