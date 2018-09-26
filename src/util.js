@@ -4,7 +4,7 @@ import {GAMES_CSV_URL, LEAGUES} from "./constants";
 import {convertESPNTeam} from "./convert";
 
 import Promise from 'bluebird';
-import csvParse from 'csv-parse';
+import csvParse from 'csv-parse/lib/es5';
 import moment from 'moment';
 import axios from 'axios';
 import cheerio from 'cheerio';
