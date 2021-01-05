@@ -27,7 +27,7 @@
     "wu": "^2.1.0"
   },
   "dependencies": {
-    "axios": "^0.18.0",
+    "axios": "^0.21.1",
     "bluebird": "^3.5.2",
     "cheerio": "^1.0.0-rc.2",
     "csv-parse": "^2.5.0",
